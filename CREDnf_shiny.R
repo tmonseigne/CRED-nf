@@ -42,6 +42,18 @@ if (interactive()) {
                              choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
                  uiOutput("new2c"),
                  textOutput("text2c")
+               ),
+               wellPanel(
+                 selectInput("checklist2d", h4(),
+                             choices = list("Not at all" = 1, "Provide details" = 2, "Not applicable"=3), selected = NULL),
+                 uiOutput("new2d"),
+                 textOutput("text2d")
+               ),
+               wellPanel(
+                 selectInput("checklist2e", h4(),
+                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+                 uiOutput("new2e"),
+                 textOutput("text2e")
                )
                ),
 
@@ -66,6 +78,8 @@ if (interactive()) {
                      tags$li(textOutput("summary2a")),
                      tags$li(textOutput("summary2b")),
                      tags$li(textOutput("summary2c")),
+                     tags$li(textOutput("summary2d")),
+                     tags$li(textOutput("summary2e")),
                      type="a"
                    )
                  )
@@ -110,6 +124,14 @@ if (interactive()) {
       updateSelectInput(session, inputId = "checklist2c", label = "Were those who rate the outcomes (including statisticians where relevant) blinded?",
                         choices = mychoices)
     })
+    observe({
+      updateSelectInput(session, inputId = "checklist2d", label = "To what extent did participants and experimenters remain blinded?",
+                        choices = c("Not at all", "Provide details", "Not applicable"))
+    })
+    observe({
+      updateSelectInput(session, inputId = "checklist2e", label = "If this is a clinical efficacy study, was a standard-of-care intervention group used as a benchmark for improvement?",
+                        choices = mychoices)
+    })
 
 
     # Open end box to enter text - if the user has selected "yes":
@@ -138,6 +160,16 @@ if (interactive()) {
     output$new2c <- renderUI({
       if (!input$checklist2c == "Yes") return(NULL) else {
         textInput("response2c", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
+      }
+    })
+    output$new2d <- renderUI({
+      if (!input$checklist2d == "Provide details") return(NULL) else {
+        textInput("response2d", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
+      }
+    })
+    output$new2e <- renderUI({
+      if (!input$checklist2e == "Yes") return(NULL) else {
+        textInput("response2e", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
       }
     })
 
@@ -169,6 +201,16 @@ if (interactive()) {
     output$text2c <- renderText({
       if (input$checklist2c == "Yes") {
         return(input$response2c)
+      }
+    })
+    output$text2d <- renderText({
+      if (input$checklist2d == "Provide details") {
+        return(input$response2d)
+      }
+    })
+    output$text2e <- renderText({
+      if (input$checklist2e == "Yes") {
+        return(input$response2e)
       }
     })
 
@@ -222,6 +264,26 @@ if (interactive()) {
         return("Those who rated the outcomes or those who performed the analysis were not blinded")
       } else if (input$checklist2c=="Not applicable") {
         return("Blinding of those who rated the outcomes or those who performed the analysis was not applicable for this study")
+      }
+    })
+
+    output$summary2d <- renderText({
+      if (input$checklist2d=="Provide details") {
+        return(input$response2d)
+      } else if (input$checklist2d=="Not at all") {
+        return("Participants and experimenters did not remain blinded")
+      } else if (input$checklist2d=="Not applicable") {
+        return("Blinding of participants and experimenters was not applicable for this study")
+      }
+    })
+
+    output$summary2e <- renderText({
+      if (input$checklist2e=="Yes") {
+        return(input$response2e)
+      } else if (input$checklist2e=="No") {
+        return("A standard-of-care intervention group was not used as a benchmark for improvement")
+      } else if (input$checklist2e=="Not applicable") {
+        return("A standard-of-care intervention group was not applicable for this study, or this was not a clinical efficacy study")
       }
     })
 
