@@ -54,8 +54,35 @@ if (interactive()) {
                              choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
                  uiOutput("new2e"),
                  textOutput("text2e")
-               )
                ),
+               ),
+      tabPanel("Control measures",
+               h3("Control measures"),
+               wellPanel(
+                 selectInput("checklist3a", h4(),
+                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+                 uiOutput("new3a"),
+                 textOutput("text3a")
+               ),
+               wellPanel(
+                 selectInput("checklist3b", h4(),
+                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+                 uiOutput("new3b"),
+                 textOutput("text3b")
+               ),
+               wellPanel(
+                 textInput("response3c", label="Report the strategies participants used", placeholder="Copy text from manuscript that meets checklist criteria"),
+                 textOutput("text3c")
+               ),
+               wellPanel(
+                 textInput("response3d", label="Report methods used for online-data processing and artifact correction", placeholder="Copy text from manuscript that meets checklist criteria"),
+                 textOutput("text3d")
+               ),
+               wellPanel(
+                 textInput("response3e", label="Report condition and group effects for artifacts", placeholder="Copy text from manuscript that meets checklist criteria"),
+                 textOutput("text3e")
+               )
+      ),
 
       tabPanel("Control measures"),
       tabPanel("Feedback specifications"),
@@ -80,6 +107,16 @@ if (interactive()) {
                      tags$li(textOutput("summary2c")),
                      tags$li(textOutput("summary2d")),
                      tags$li(textOutput("summary2e")),
+                     type="a"
+                   ),
+
+                   tags$li("Control measures"),
+                   tags$ol(
+                     tags$li(textOutput("summary3a")),
+                     tags$li(textOutput("summary3b")),
+                     tags$li(textOutput("summary3c")),
+                     tags$li(textOutput("summary3d")),
+                     tags$li(textOutput("summary3e")),
                      type="a"
                    )
                  )
@@ -134,6 +171,17 @@ if (interactive()) {
     })
 
 
+    observe({
+      updateSelectInput(session, inputId = "checklist3a", label = "Was data collected on psychosocial factors?",
+                        choices = mychoices)
+    })
+    observe({
+      updateSelectInput(session, inputId = "checklist3b", label = "Were participants provided with a strategy?",
+                        choices = mychoices)
+    })
+
+
+
     # Open end box to enter text - if the user has selected "yes":
     output$new1a <- renderUI({
       if (!input$checklist1a == "Yes") return(NULL) else {
@@ -170,6 +218,18 @@ if (interactive()) {
     output$new2e <- renderUI({
       if (!input$checklist2e == "Yes") return(NULL) else {
         textInput("response2e", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
+      }
+    })
+
+
+    output$new3a <- renderUI({
+      if (!input$checklist3a == "Yes") return(NULL) else {
+        textInput("response3a", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
+      }
+    })
+    output$new3b <- renderUI({
+      if (!input$checklist3b == "Yes") return(NULL) else {
+        textInput("response3b", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
       }
     })
 
@@ -211,6 +271,18 @@ if (interactive()) {
     output$text2e <- renderText({
       if (input$checklist2e == "Yes") {
         return(input$response2e)
+      }
+    })
+
+
+    output$text3a <- renderText({
+      if (input$checklist3a == "Yes") {
+        return(input$response3a)
+      }
+    })
+    output$text3b <- renderText({
+      if (input$checklist3b == "Yes") {
+        return(input$response3b)
       }
     })
 
@@ -285,6 +357,39 @@ if (interactive()) {
       } else if (input$checklist2e=="Not applicable") {
         return("A standard-of-care intervention group was not applicable for this study, or this was not a clinical efficacy study")
       }
+    })
+
+
+    output$summary3a <- renderText({
+      if (input$checklist3a=="Yes") {
+        return(input$response3a)
+      } else if (input$checklist3a=="No") {
+        return("Data was not collected on psychosocial factors")
+      } else if (input$checklist3a=="Not applicable") {
+        return("Data on psychosocial factors was not applicable for this study")
+      }
+    })
+
+    output$summary3b <- renderText({
+      if (input$checklist3b=="Yes") {
+        return(input$response3b)
+      } else if (input$checklist3b=="No") {
+        return("Participants were not provided with a strategy")
+      } else if (input$checklist3b=="Not applicable") {
+        return("Providing a strategy to participants was not applicable for this study")
+      }
+    })
+
+    output$summary3c <- renderText({
+      return(input$response3c)
+    })
+
+    output$summary3d <- renderText({
+      return(input$response3d)
+    })
+
+    output$summary3e <- renderText({
+      return(input$response3e)
     })
 
     # Add option to export to PDF and/or Docx
