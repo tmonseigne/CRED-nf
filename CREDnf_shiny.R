@@ -536,26 +536,51 @@ if (interactive()) {
 
 
     ############# Report summary #############
-
-    output$summary1a <- renderText({
+    
+    sum1a <- reactive({
+      #ifelse(input$checklist1a=="Yes", input$response1a, "NOOOOOOO")
       if (input$checklist1a=="Yes") {
-        return(input$response1a)
-      } else if (input$checklist1a=="No") {
-        return("Protocol and planned analyses were not pre-registered")
-      } else if (input$checklist1a=="Not applicable") {
-        return("Protocol and planned analyses were not applicable")
-      }
+          return(input$response1a)
+        } else if (input$checklist1a=="No") {
+          return("Protocol and planned analyses were not pre-registered")
+        } else if (input$checklist1a=="Not applicable") {
+          return("Protocol and planned analyses were not applicable")
+        }
     })
-
-    output$summary1b <- renderText({
+    sum1b <- reactive({
+      #ifelse(input$checklist1b=="Yes", input$response1b, "NOOOOOOO")
       if (input$checklist1b=="Yes") {
-        return(input$response1b)
-      } else if (input$checklist1b=="No") {
-        return("No justification was given for the sample size")
-      } else if (input$checklist1b=="Not applicable") {
-        return("A sample size was not applicable for this study")
-      }
+          return(input$response1b)
+        } else if (input$checklist1b=="No") {
+          return("No justification was given for the sample size")
+        } else if (input$checklist1b=="Not applicable") {
+          return("A sample size was not applicable for this study")
+        }
     })
+    
+    output$summary1a <- renderText({sum1a()})
+    output$summary1b <- renderText({sum1b()})
+    
+    
+    # output$summary1a <- renderText({
+    #   if (input$checklist1a=="Yes") {
+    #     return(input$response1a)
+    #   } else if (input$checklist1a=="No") {
+    #     return("Protocol and planned analyses were not pre-registered")
+    #   } else if (input$checklist1a=="Not applicable") {
+    #     return("Protocol and planned analyses were not applicable")
+    #   }
+    # })
+
+    # output$summary1b <- renderText({
+    #   if (input$checklist1b=="Yes") {
+    #     return(input$response1b)
+    #   } else if (input$checklist1b=="No") {
+    #     return("No justification was given for the sample size")
+    #   } else if (input$checklist1b=="Not applicable") {
+    #     return("A sample size was not applicable for this study")
+    #   }
+    # })
 
 
     output$summary2a <- renderText({
@@ -690,7 +715,7 @@ if (interactive()) {
       if (input$checklist4e=="Provide details") {
         return(input$response4e)
       } else if (input$checklist4e=="Not applicable") {
-        return("No hardware of software were used in this study")
+        return("No hardware or software were used in this study")
       }
     })
 
@@ -732,12 +757,7 @@ if (interactive()) {
         file.copy("report.Rmd", tempReport, overwrite = TRUE)
 
         # Set up parameters to pass to Rmd document
-        params <- list()
-        params$domain1 <- c(output$summary1a, output$summary1b)
-        params$domain2 <- c(output$summary2a, output$summary2b, output$summary2c, output$summary2d, output$summary2e)
-        params$domain3 <- c(output$summary3a, output$summary3b, output$summary3c, output$summary3d, output$summary3e)
-        params$domain4 <- c(output$summary4a, output$summary4b, output$summary4c, output$summary4d, output$summary4e)
-        params$domain5 <- c(output$summary5a, output$summary5b, output$summary5c)
+        params <- list("domain1"=c(sum1a(), sum1b()))
 
         # Knit the document using params
         rmarkdown::render(tempReport, output_file = file,

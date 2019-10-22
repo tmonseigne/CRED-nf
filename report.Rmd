@@ -1,12 +1,8 @@
 ---
-title: "Dynamic report"
+title: "CRED-nf checklist summary"
 output: pdf_document
 params:
   domain1: NA
-  domain2: NA
-  domain3: NA
-  domain4: NA
-  domain5: NA
 ---
 
 ```{r setup, include=FALSE}
@@ -14,38 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-
 ## Checklist Summary
 
 1. Pre-experiment
   + `r params$domain1[1]`
   + `r params$domain1[2]`
-2. Control groups
-  + `r params$domain2[1]`
-  + `r params$domain2[2]`
-  + `r params$domain2[3]`
-  + `r params$domain2[4]`
-  + `r params$domain2[5]`
-3. Control measures
-  + `r params$domain3[1]`
-  + `r params$domain3[2]`
-  + `r params$domain3[3]`
-  + `r params$domain3[4]`
-  + `r params$domain3[5]`
-4. Feedback specifications
-  + `r params$domain4[1]`
-  + `r params$domain4[2]`
-  + `r params$domain4[3]`
-  + `r params$domain4[4]`
-  + `r params$domain4[5]`
-5. Outcome measures - Brain
-  + `r params$domain5[1]`
-  + `r params$domain5[2]`
-  + `r params$domain5[3]`
-  
+
