@@ -197,7 +197,10 @@ if (interactive()) {
                      type="a"
                    )
                  )
-               )
+               ),
+
+               br(), br(),
+               downloadButton("reportpdf", "Download summary")
                ),
       widths=c(2,10)
     )
@@ -720,6 +723,31 @@ if (interactive()) {
 
 
     # Add option to export to PDF and/or Docx
+
+    output$reportpdf <- downloadHandler(
+      filename = "checklist.pdf",
+      content = function(file) {
+        # Copy report file to temp directory before processing it to avoid permission issues
+        tempReport <- file.path(tempdir(), "report.Rmd")
+        file.copy("report.Rmd", tempReport, overwrite = TRUE)
+
+        # Set up parameters to pass to Rmd document
+        params <- list()
+        params$domain1 <- c(output$summary1a, output$summary1b)
+        params$domain2 <- c(output$summary2a, output$summary2b, output$summary2c, output$summary2d, output$summary2e)
+        params$domain3 <- c(output$summary3a, output$summary3b, output$summary3c, output$summary3d, output$summary3e)
+        params$domain4 <- c(output$summary4a, output$summary4b, output$summary4c, output$summary4d, output$summary4e)
+        params$domain5 <- c(output$summary5a, output$summary5b, output$summary5c)
+
+        # Knit the document using params
+        rmarkdown::render(tempReport, output_file = file,
+                          params=params,
+                          envir=new.env(parent = globalenv()) # Eval in child of global env to isolate rmd code from app code
+                          )
+      }
+    )
+
+
     # Add warning (and specify number) of any responses marked as "NO" at start of summary before output
 
   }
