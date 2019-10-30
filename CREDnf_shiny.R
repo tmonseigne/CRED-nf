@@ -250,6 +250,10 @@ if (interactive()) {
                })
                ),
       tabPanel("Checklist summary",
+               tags$span(style="color:red", 
+                         strong(em(textOutput("warningtext")))
+                         ),
+               
                h3("CRED-nf checklist summary output"),
                tags$div(
                  tags$ol(
@@ -411,6 +415,27 @@ if (interactive()) {
       
       output[[summaryIDs[i]]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
     })
+    
+    
+    ########## Add warning text for items left blank ##########
+    
+    warningtext <- reactive({
+      blankindex <- vector()
+      
+      for (i in 1:ncheck) {
+        if (input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
+          if (input[[responseIDs[i]]]=="") {
+            blankindex <- append(blankindex, i)
+          }
+        }
+      }
+      
+      if (length(blankindex)>0) {
+        return(paste0("Warning: Checklist item(s) ", paste(checkIDs[blankindex], collapse=", "), 
+                      " have been left blank."))
+      } else {return(NULL)}
+    })
+    output$warningtext <- renderText(warningtext())
     
     
     ########## Add option to export to PDF and/or Docx ##########
