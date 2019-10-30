@@ -178,19 +178,6 @@ if (interactive()) {
                    textOutput(textIDs[i])
                  )
                })
-               
-               # wellPanel(
-               #   selectInput("checklist1a", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new1a"),
-               #   textOutput("text1a")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist1b", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new1b"),
-               #   textOutput("text1b")
-               # )
                ),
 
       tabPanel("Control groups",
@@ -203,37 +190,6 @@ if (interactive()) {
                    textOutput(textIDs[i])
                  )
                })
-               
-               # wellPanel(
-               #   selectInput("checklist2a", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new2a"),
-               #   textOutput("text2a")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist2b", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new2b"),
-               #   textOutput("text2b")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist2c", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new2c"),
-               #   textOutput("text2c")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist2d", h4(),
-               #               choices = list("Not at all" = 1, "Provide details" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new2d"),
-               #   textOutput("text2d")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist2e", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new2e"),
-               #   textOutput("text2e")
-               # )
                ),
 
       tabPanel("Control measures",
@@ -246,37 +202,6 @@ if (interactive()) {
                    textOutput(textIDs[i])
                  )
                })
-               
-               # wellPanel(
-               #   selectInput("checklist3a", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new3a"),
-               #   textOutput("text3a")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist3b", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new3b"),
-               #   textOutput("text3b")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist3c", h4(),
-               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-               #   uiOutput("new3c"),
-               #   textOutput("text3c")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist3d", h4(),
-               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-               #   uiOutput("new3d"),
-               #   textOutput("text3d")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist3e", h4(),
-               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-               #   uiOutput("new3e"),
-               #   textOutput("text3e")
-               # )
       ),
 
       tabPanel("Feedback specifications",
@@ -289,37 +214,6 @@ if (interactive()) {
                    textOutput(textIDs[i])
                  )
                })
-               
-               # wellPanel(
-               #   selectInput("checklist4a", h4(),
-               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-               #   uiOutput("new4a"),
-               #   textOutput("text4a")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist4b", h4(),
-               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-               #   uiOutput("new4b"),
-               #   textOutput("text4b")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist4c", h4(),
-               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-               #   uiOutput("new4c"),
-               #   textOutput("text4c")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist4d", h4(),
-               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-               #   uiOutput("new4d"),
-               #   textOutput("text4d")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist4e", h4(),
-               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-               #   uiOutput("new4e"),
-               #   textOutput("text4e")
-               # )
                ),
 
       tabPanel("Outcome measures - Brain",
@@ -332,25 +226,6 @@ if (interactive()) {
                    textOutput(textIDs[i])
                  )
                })
-               
-               # wellPanel(
-               #   selectInput("checklist5a", h4(),
-               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-               #   uiOutput("new5a"),
-               #   textOutput("text5a")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist5b", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new5b"),
-               #   textOutput("text5b")
-               # ),
-               # wellPanel(
-               #   selectInput("checklist5c", h4(),
-               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-               #   uiOutput("new5c"),
-               #   textOutput("text5c")
-               # )
                ),
       tabPanel("Outcome measures - Behaviour",
                h3("Outcome measures - Behaviour"),
@@ -383,9 +258,6 @@ if (interactive()) {
                      lapply(1:2, function(i) {
                        tags$li(textOutput(summaryIDs[i]))
                      }),
-                     
-                     # tags$li(textOutput("summary1a")),
-                     # tags$li(textOutput("summary1b")),
                      type="a"
                    ),
 
@@ -403,12 +275,6 @@ if (interactive()) {
                      lapply(7:8, function(i) {
                        tags$li(textOutput(summaryIDs[i]))
                      }),
-                     
-                     # tags$li(textOutput("summary2a")),
-                     # tags$li(textOutput("summary2b")),
-                     # tags$li(textOutput("summary2c")),
-                     # tags$li(textOutput("summary2d")),
-                     # tags$li(textOutput("summary2e")),
                      type="a"
                    ),
 
@@ -417,12 +283,6 @@ if (interactive()) {
                      lapply(9:13, function(i) {
                        tags$li(textOutput(summaryIDs[i]))
                      }),
-                     
-                     # tags$li(textOutput("summary3a")),
-                     # tags$li(textOutput("summary3b")),
-                     # tags$li(textOutput("summary3c")),
-                     # tags$li(textOutput("summary3d")),
-                     # tags$li(textOutput("summary3e")),
                      type="a"
                    ),
 
@@ -431,12 +291,6 @@ if (interactive()) {
                      lapply(14:18, function(i) {
                        tags$li(textOutput(summaryIDs[i]))
                      }),
-                     
-                     # tags$li(textOutput("summary4a")),
-                     # tags$li(textOutput("summary4b")),
-                     # tags$li(textOutput("summary4c")),
-                     # tags$li(textOutput("summary4d")),
-                     # tags$li(textOutput("summary4e")),
                      type="a"
                    ),
 
@@ -445,10 +299,6 @@ if (interactive()) {
                      lapply(19:21, function(i) {
                        tags$li(textOutput(summaryIDs[i]))
                      }),
-                     
-                     # tags$li(textOutput("summary5a")),
-                     # tags$li(textOutput("summary5b")),
-                     # tags$li(textOutput("summary5c")),
                      type="a"
                    ),
                    
@@ -457,9 +307,6 @@ if (interactive()) {
                      lapply(22:23, function(i) {
                        tags$li(textOutput(summaryIDs[i]))
                      }),
-                     
-                     # tags$li(textOutput("summary6a")),
-                     # tags$li(textOutput("summary6b")),
                      type="a"
                    ),
                    
@@ -468,8 +315,6 @@ if (interactive()) {
                      lapply(24, function(i) {
                        tags$li(textOutput(summaryIDs[i]))
                      }),
-                     
-                     # tags$li(textOutput("summary7a")),
                      type="a"
                    )
                  )
@@ -502,22 +347,7 @@ if (interactive()) {
     
     ############ Add open end box to enter text if they user has selected "yes############
     
-    output[[newIDs[1]]] <- renderUI({
-      if (!input[[inputIDs[1]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
-        return(NULL) 
-      } else {
-        textInput(responseIDs[1], label=NULL, placeholder=placeholders[[1]])
-      }
-    })
-    output[[newIDs[2]]] <- renderUI({
-      if (!input[[inputIDs[2]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
-        return(NULL) 
-      } else {
-        textInput(responseIDs[2], label=NULL, placeholder=placeholders[[2]])
-      }
-    })
-    
-    lapply(3:ncheck, function(i) {
+    lapply(1:ncheck, function(i) {
       output[[newIDs[i]]] <- renderUI({
         if (!input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
           return(NULL)
@@ -531,14 +361,6 @@ if (interactive()) {
 
     ########### Return text ############
     
-    # for (i in 1:ncheck) {
-    #   output[[paste0("text", checkIDs[i])]] <- renderText({
-    #     if (input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
-    #       return(input[[responseIDs[i]]])
-    #     }
-    #   })
-    # }
-    
     lapply(1:ncheck, function(i) {
       output[[paste0("text", checkIDs[i])]] <- renderText({
         if (input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
@@ -549,58 +371,6 @@ if (interactive()) {
 
 
     ############# Report summary #############
-    
-    # assign(sumIDs[1],
-    #        reactive({
-    #          if (input[[inputIDs[1]]] == "Yes") {
-    #            return(input[[responseIDs[1]]])
-    #          } else if (input[[inputIDs[1]]] == "No") {
-    #            return(noboilers[1])
-    #          } else if (input[[inputIDs[1]]] == "Not applicable") {
-    #            return(naboilers[1])
-    #          } else if (input[[inputIDs[1]]] == "Yes, and the measure was defined a priori") {
-    #            return(input[[responseIDs[1]]])
-    #          } else if (input[[inputIDs[1]]] == "Yes, and the measure was not defined a priori") {
-    #            temp <- input[[responseIDs[1]]]
-    #            
-    #            # Remove leading/trailing whitespace and add period if not at end
-    #            temp <- trimws(temp)
-    #            if (!grepl(".+\\.$", temp)) {
-    #              temp <- paste0(temp, ".")
-    #            }
-    #            return(paste(temp, "This clinical or behavioural significance value was not defined a priori", sep=" "))
-    #          }
-    #        })
-    # )
-    # 
-    # output[[summaryIDs[1]]] <- renderText({eval(parse(text=paste0(sumIDs[1], "()")))})
-    
-    # for (i in 2:ncheck) {
-    #   assign(sumIDs[i],
-    #          reactive({
-    #            if (input[[inputIDs[i]]] == "Yes") {
-    #              return(input[[responseIDs[i]]])
-    #            } else if (input[[inputIDs[i]]] == "No") {
-    #              return(noboilers[i])
-    #            } else if (input[[inputIDs[i]]] == "Not applicable") {
-    #              return(naboilers[i])
-    #            } else if (input[[inputIDs[i]]] == "Yes, and the measure was defined a priori") {
-    #              return(input[[responseIDs[i]]])
-    #            } else if (input[[inputIDs[i]]] == "Yes, and the measure was not defined a priori") {
-    #              temp <- input[[responseIDs[i]]]
-    #              
-    #              # Remove leading/trailing whitespace and add period if not at end
-    #              temp <- trimws(temp)
-    #              if (!grepl(".+\\.$", temp)) {
-    #                temp <- paste0(temp, ".")
-    #              }
-    #              return(paste(temp, "This clinical or behavioural significance value was not defined a priori", sep=" "))
-    #            }
-    #          })
-    #          )
-    #   
-    #   output[[summaryIDs[i]]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
-    # }
     
     lapply(1:ncheck, function(i) {
       assign(sumIDs[i],
@@ -642,216 +412,7 @@ if (interactive()) {
       output[[summaryIDs[i]]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
     })
     
-    # sum1a <- reactive({
-    #   #ifelse(input$checklist1a=="Yes", input$response1a, "NOOOOOOO")
-    #   if (input$checklist1a=="Yes") {
-    #       return(input$response1a)
-    #     } else if (input$checklist1a=="No") {
-    #       return("Protocol and planned analyses were not pre-registered")
-    #     } else if (input$checklist1a=="Not applicable") {
-    #       return("Protocol and planned analyses were not applicable")
-    #     }
-    # })
-    # sum1b <- reactive({
-    #   #ifelse(input$checklist1b=="Yes", input$response1b, "NOOOOOOO")
-    #   if (input$checklist1b=="Yes") {
-    #       return(input$response1b)
-    #     } else if (input$checklist1b=="No") {
-    #       return("No justification was given for the sample size")
-    #     } else if (input$checklist1b=="Not applicable") {
-    #       return("A sample size was not applicable for this study")
-    #     }
-    # })
-    # 
-    # output$summary1a <- renderText({sum1a()})
-    # output$summary1b <- renderText({sum1b()})
-    # 
-    # 
-    # # output$summary1a <- renderText({
-    # #   if (input$checklist1a=="Yes") {
-    # #     return(input$response1a)
-    # #   } else if (input$checklist1a=="No") {
-    # #     return("Protocol and planned analyses were not pre-registered")
-    # #   } else if (input$checklist1a=="Not applicable") {
-    # #     return("Protocol and planned analyses were not applicable")
-    # #   }
-    # # })
-    # 
-    # # output$summary1b <- renderText({
-    # #   if (input$checklist1b=="Yes") {
-    # #     return(input$response1b)
-    # #   } else if (input$checklist1b=="No") {
-    # #     return("No justification was given for the sample size")
-    # #   } else if (input$checklist1b=="Not applicable") {
-    # #     return("A sample size was not applicable for this study")
-    # #   }
-    # # })
-    # 
-    # 
-    # output$summary2a <- renderText({
-    #   if (input$checklist2a=="Yes") {
-    #     return(input$response2a)
-    #   } else if (input$checklist2a=="No") {
-    #     return("No control group(s)/condition(s) were employed in this study")
-    #   } else if (input$checklist2a=="Not applicable") {
-    #     return("Control group(s)/condition(s) were not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary2b <- renderText({
-    #   if (input$checklist2b=="Yes") {
-    #     return(input$response2b)
-    #   } else if (input$checklist2b=="No") {
-    #     return("This study did not use a double-blind design")
-    #   } else if (input$checklist2b=="Not applicable") {
-    #     return("A double-blind design was not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary2c <- renderText({
-    #   if (input$checklist2c=="Yes") {
-    #     return(input$response2c)
-    #   } else if (input$checklist2c=="No") {
-    #     return("Those who rated the outcomes or those who performed the analysis were not blinded")
-    #   } else if (input$checklist2c=="Not applicable") {
-    #     return("Blinding of those who rated the outcomes or those who performed the analysis was not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary2d <- renderText({
-    #   if (input$checklist2d=="Provide details") {
-    #     return(input$response2d)
-    #   } else if (input$checklist2d=="Not at all") {
-    #     return("Participants and experimenters did not remain blinded")
-    #   } else if (input$checklist2d=="Not applicable") {
-    #     return("Blinding of participants and experimenters was not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary2e <- renderText({
-    #   if (input$checklist2e=="Yes") {
-    #     return(input$response2e)
-    #   } else if (input$checklist2e=="No") {
-    #     return("A standard-of-care intervention group was not used as a benchmark for improvement")
-    #   } else if (input$checklist2e=="Not applicable") {
-    #     return("A standard-of-care intervention group was not applicable for this study, or this was not a clinical efficacy study")
-    #   }
-    # })
-    # 
-    # 
-    # output$summary3a <- renderText({
-    #   if (input$checklist3a=="Yes") {
-    #     return(input$response3a)
-    #   } else if (input$checklist3a=="No") {
-    #     return("Data was not collected on psychosocial factors")
-    #   } else if (input$checklist3a=="Not applicable") {
-    #     return("Data on psychosocial factors was not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary3b <- renderText({
-    #   if (input$checklist3b=="Yes") {
-    #     return(input$response3b)
-    #   } else if (input$checklist3b=="No") {
-    #     return("Participants were not provided with a strategy")
-    #   } else if (input$checklist3b=="Not applicable") {
-    #     return("Providing a strategy to participants was not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary3c <- renderText({
-    #   if (input$checklist3c=="Provide details") {
-    #     return(input$response3c)
-    #   } else if (input$checklist3c=="Not applicable") {
-    #     return("Participant strategies were not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary3d <- renderText({
-    #   if (input$checklist3d=="Provide details") {
-    #     return(input$response3d)
-    #   } else if (input$checklist3d=="Not applicable") {
-    #     return("Online data-processing and artifact collection was not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary3e <- renderText({
-    #   if (input$checklist3e=="Provide details") {
-    #     return(input$response3e)
-    #   } else if (input$checklist3e=="Not applicable") {
-    #     return("Condition and group effects for artifacts were not applicable for this study")
-    #   }
-    # })
-    # 
-    # 
-    # output$summary4a <- renderText({
-    #   if (input$checklist4a=="Provide details") {
-    #     return(input$response4a)
-    #   } else if (input$checklist4a=="Not applicable") {
-    #     return("Online-feature extraction was not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary4b <- renderText({
-    #   if (input$checklist4b=="Provide details") {
-    #     return(input$response4b)
-    #   } else if (input$checklist4b=="Not applicable") {
-    #     return("A reinforcement schedule was not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary4c <- renderText({
-    #   if (input$checklist4c=="Provide details") {
-    #     return(input$response4c)
-    #   } else if (input$checklist4c=="Not applicable") {
-    #     return("Feedback modality and content was not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary4d <- renderText({
-    #   if (input$checklist4d=="Provide details") {
-    #     return(input$response4d)
-    #   } else if (input$checklist4d=="Not applicable") {
-    #     return("Brain activity variable(s) and/or contrasts used for feedback were not applicable for this study")
-    #   }
-    # })
-    # 
-    # output$summary4e <- renderText({
-    #   if (input$checklist4e=="Provide details") {
-    #     return(input$response4e)
-    #   } else if (input$checklist4e=="Not applicable") {
-    #     return("No hardware or software were used in this study")
-    #   }
-    # })
-    # 
-    # 
-    # output$summary5a <- renderText({
-    #   if (input$checklist5a=="Provide details") {
-    #     return(input$response5a)
-    #   } else if (input$checklist5a=="Not applicable") {
-    #     return("Neurofeedback regulation success based on the feedback signal was not applicable for this study")
-    #   }
-    # })
-    # output$summary5b <- renderText({
-    #   if (input$checklist5b=="Yes") {
-    #     return(input$response5b)
-    #   } else if (input$checklist5b=="No") {
-    #     return("Within-session and between-session regulation blocks of feedback variable(s) were not plotted in this study")
-    #   } else if (input$checklist5b=="Not applicable") {
-    #     return("Plots of within-session and between-session regulation blocks of feedback variable(s) were not applicable for this study")
-    #   }
-    # })
-    # output$summary5c <- renderText({
-    #   if (input$checklist5c=="Yes") {
-    #     return(input$response5c)
-    #   } else if (input$checklist5c=="No") {
-    #     return("The experimental condition/group and the control condition(s)/group(s) were not statistically compared")
-    #   } else if (input$checklist5c=="Not applicable") {
-    #     return("Statistical comparison of the experimental condition/group and the control condition(s)/group(s) was not applicable for this study")
-    #   }
-    # })
-
-
+    
     ########## Add option to export to PDF and/or Docx ##########
 
     output$reportpdf <- downloadHandler(
