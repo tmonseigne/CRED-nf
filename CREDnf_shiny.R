@@ -1,6 +1,35 @@
 library(shiny)
 
 if (interactive()) {
+  
+  ncheck <- 24 # Number of checklist items
+  checkIDs <- c("1a", "1b",
+                "2a", "2b", "2c-rater", "2c-stat", "2d", "2e",
+                "3a", "3b", "3c", "3d", "3e",
+                "4a", "4b", "4c", "4d", "4e",
+                "5a", "5b", "5c",
+                "6a", "6b",
+                "7a"
+  )
+  inputIDs <- paste0("checklist", checkIDs)  # Generate inputIDs
+  newIDs <- paste0("new", checkIDs)  # Generate newIDs
+  textIDs <- paste0("text", checkIDs)  # Generate textIDs
+  summaryIDs <- paste0("summary", checkIDs)  # Generate summaryIDs
+  choicecode <- c(1,1,
+                  1,2,2,2,2,2,
+                  1,1,1,1,1,
+                  1,1,1,1,1,
+                  1,1,2,
+                  3,2,
+                  1
+  )
+  # A vector of pre-existing choices:
+  choicelist <- list(c("No", "Yes"),
+                     c("No", "Yes", "Not applicable"),
+                     c("No", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori", "Not applicable")
+  )
+  
+  # IF THIS WORKS THEN ADD ALL OTHER FIXED VARIABLES TOO!
 
   ui <- fluidPage(
     titlePanel("CRED-nf Checklist"),
@@ -9,191 +38,297 @@ if (interactive()) {
       "Domains",
       tabPanel("Pre-experiment",
                h3("Pre-Experiment"),
-               wellPanel(
-                 selectInput("checklist1a", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new1a"),
-                 textOutput("text1a")
-               ),
-               wellPanel(
-                 selectInput("checklist1b", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new1b"),
-                 textOutput("text1b")
-               )
+               lapply(1:2, function(i) {
+                 wellPanel(
+                   selectInput(inputIDs[i], h4(),
+                               choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
+                   uiOutput(newIDs[i]),
+                   textOutput(textIDs[i])
+                 )
+               })
+               
+               # wellPanel(
+               #   selectInput("checklist1a", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new1a"),
+               #   textOutput("text1a")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist1b", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new1b"),
+               #   textOutput("text1b")
+               # )
                ),
 
       tabPanel("Control groups",
                h3("Control groups"),
-               wellPanel(
-                 selectInput("checklist2a", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new2a"),
-                 textOutput("text2a")
-               ),
-               wellPanel(
-                 selectInput("checklist2b", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new2b"),
-                 textOutput("text2b")
-               ),
-               wellPanel(
-                 selectInput("checklist2c", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new2c"),
-                 textOutput("text2c")
-               ),
-               wellPanel(
-                 selectInput("checklist2d", h4(),
-                             choices = list("Not at all" = 1, "Provide details" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new2d"),
-                 textOutput("text2d")
-               ),
-               wellPanel(
-                 selectInput("checklist2e", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new2e"),
-                 textOutput("text2e")
-               )
+               lapply(3:8, function(i) {
+                 wellPanel(
+                   selectInput(inputIDs[i], h4(),
+                               choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
+                   uiOutput(newIDs[i]),
+                   textOutput(textIDs[i])
+                 )
+               })
+               
+               # wellPanel(
+               #   selectInput("checklist2a", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new2a"),
+               #   textOutput("text2a")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist2b", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new2b"),
+               #   textOutput("text2b")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist2c", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new2c"),
+               #   textOutput("text2c")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist2d", h4(),
+               #               choices = list("Not at all" = 1, "Provide details" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new2d"),
+               #   textOutput("text2d")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist2e", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new2e"),
+               #   textOutput("text2e")
+               # )
                ),
 
       tabPanel("Control measures",
                h3("Control measures"),
-               wellPanel(
-                 selectInput("checklist3a", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new3a"),
-                 textOutput("text3a")
-               ),
-               wellPanel(
-                 selectInput("checklist3b", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new3b"),
-                 textOutput("text3b")
-               ),
-               wellPanel(
-                 selectInput("checklist3c", h4(),
-                             choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-                 uiOutput("new3c"),
-                 textOutput("text3c")
-               ),
-               wellPanel(
-                 selectInput("checklist3d", h4(),
-                             choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-                 uiOutput("new3d"),
-                 textOutput("text3d")
-               ),
-               wellPanel(
-                 selectInput("checklist3e", h4(),
-                             choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-                 uiOutput("new3e"),
-                 textOutput("text3e")
-               )
+               lapply(9:13, function(i) {
+                 wellPanel(
+                   selectInput(inputIDs[i], h4(),
+                               choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
+                   uiOutput(newIDs[i]),
+                   textOutput(textIDs[i])
+                 )
+               })
+               
+               # wellPanel(
+               #   selectInput("checklist3a", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new3a"),
+               #   textOutput("text3a")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist3b", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new3b"),
+               #   textOutput("text3b")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist3c", h4(),
+               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
+               #   uiOutput("new3c"),
+               #   textOutput("text3c")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist3d", h4(),
+               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
+               #   uiOutput("new3d"),
+               #   textOutput("text3d")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist3e", h4(),
+               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
+               #   uiOutput("new3e"),
+               #   textOutput("text3e")
+               # )
       ),
 
       tabPanel("Feedback specifications",
                h3("Feedback specifications"),
-               wellPanel(
-                 selectInput("checklist4a", h4(),
-                             choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-                 uiOutput("new4a"),
-                 textOutput("text4a")
-               ),
-               wellPanel(
-                 selectInput("checklist4b", h4(),
-                             choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-                 uiOutput("new4b"),
-                 textOutput("text4b")
-               ),
-               wellPanel(
-                 selectInput("checklist4c", h4(),
-                             choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-                 uiOutput("new4c"),
-                 textOutput("text4c")
-               ),
-               wellPanel(
-                 selectInput("checklist4d", h4(),
-                             choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-                 uiOutput("new4d"),
-                 textOutput("text4d")
-               ),
-               wellPanel(
-                 selectInput("checklist4e", h4(),
-                             choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-                 uiOutput("new4e"),
-                 textOutput("text4e")
-               )
+               lapply(14:18, function(i) {
+                 wellPanel(
+                   selectInput(inputIDs[i], h4(),
+                               choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
+                   uiOutput(newIDs[i]),
+                   textOutput(textIDs[i])
+                 )
+               })
+               
+               # wellPanel(
+               #   selectInput("checklist4a", h4(),
+               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
+               #   uiOutput("new4a"),
+               #   textOutput("text4a")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist4b", h4(),
+               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
+               #   uiOutput("new4b"),
+               #   textOutput("text4b")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist4c", h4(),
+               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
+               #   uiOutput("new4c"),
+               #   textOutput("text4c")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist4d", h4(),
+               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
+               #   uiOutput("new4d"),
+               #   textOutput("text4d")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist4e", h4(),
+               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
+               #   uiOutput("new4e"),
+               #   textOutput("text4e")
+               # )
                ),
 
       tabPanel("Outcome measures - Brain",
                h3("Outcome measures - Brain"),
-               wellPanel(
-                 selectInput("checklist5a", h4(),
-                             choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
-                 uiOutput("new5a"),
-                 textOutput("text5a")
+               lapply(19:21, function(i) {
+                 wellPanel(
+                   selectInput(inputIDs[i], h4(),
+                               choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
+                   uiOutput(newIDs[i]),
+                   textOutput(textIDs[i])
+                 )
+               })
+               
+               # wellPanel(
+               #   selectInput("checklist5a", h4(),
+               #               choices = list("Not applicable" = 1, "Provide details" = 2), selected = NULL),
+               #   uiOutput("new5a"),
+               #   textOutput("text5a")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist5b", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new5b"),
+               #   textOutput("text5b")
+               # ),
+               # wellPanel(
+               #   selectInput("checklist5c", h4(),
+               #               choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
+               #   uiOutput("new5c"),
+               #   textOutput("text5c")
+               # )
                ),
-               wellPanel(
-                 selectInput("checklist5b", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new5b"),
-                 textOutput("text5b")
+      tabPanel("Outcome measures - Behaviour",
+               h3("Outcome measures - Behaviour"),
+               lapply(22:23, function(i) {
+                 wellPanel(
+                   selectInput(inputIDs[i], h4(),
+                               choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
+                   uiOutput(newIDs[i]),
+                   textOutput(textIDs[i])
+                 )
+               })
                ),
-               wellPanel(
-                 selectInput("checklist5c", h4(),
-                             choices = list("No" = 1, "Yes" = 2, "Not applicable"=3), selected = NULL),
-                 uiOutput("new5c"),
-                 textOutput("text5c")
-               )
+      tabPanel("Data storage",
+               h3("Outcome measures - Brain"),
+               lapply(24, function(i) {
+                 wellPanel(
+                   selectInput(inputIDs[i], h4(),
+                               choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
+                   uiOutput(newIDs[i]),
+                   textOutput(textIDs[i])
+                 )
+               })
                ),
-      tabPanel("Outcome measures - Behaviour"),
-      tabPanel("Data storage"),
       tabPanel("Checklist summary",
                h3("CRED-nf checklist summary output"),
                tags$div(
                  tags$ol(
                    tags$li("Pre-experiment"),
                    tags$ol(
-                     tags$li(textOutput("summary1a")),
-                     tags$li(textOutput("summary1b")),
+                     lapply(1:2, function(i) {
+                       tags$li(textOutput(summaryIDs[i]))
+                     }),
+                     
+                     # tags$li(textOutput("summary1a")),
+                     # tags$li(textOutput("summary1b")),
                      type="a"
                    ),
 
                    tags$li("Control groups"),
                    tags$ol(
-                     tags$li(textOutput("summary2a")),
-                     tags$li(textOutput("summary2b")),
-                     tags$li(textOutput("summary2c")),
-                     tags$li(textOutput("summary2d")),
-                     tags$li(textOutput("summary2e")),
+                     lapply(3:8, function(i) {
+                       tags$li(textOutput(summaryIDs[i]))
+                     }),
+                     
+                     # tags$li(textOutput("summary2a")),
+                     # tags$li(textOutput("summary2b")),
+                     # tags$li(textOutput("summary2c")),
+                     # tags$li(textOutput("summary2d")),
+                     # tags$li(textOutput("summary2e")),
                      type="a"
                    ),
 
                    tags$li("Control measures"),
                    tags$ol(
-                     tags$li(textOutput("summary3a")),
-                     tags$li(textOutput("summary3b")),
-                     tags$li(textOutput("summary3c")),
-                     tags$li(textOutput("summary3d")),
-                     tags$li(textOutput("summary3e")),
+                     lapply(9:13, function(i) {
+                       tags$li(textOutput(summaryIDs[i]))
+                     }),
+                     
+                     # tags$li(textOutput("summary3a")),
+                     # tags$li(textOutput("summary3b")),
+                     # tags$li(textOutput("summary3c")),
+                     # tags$li(textOutput("summary3d")),
+                     # tags$li(textOutput("summary3e")),
                      type="a"
                    ),
 
                    tags$li("Feedback specifications"),
                    tags$ol(
-                     tags$li(textOutput("summary4a")),
-                     tags$li(textOutput("summary4b")),
-                     tags$li(textOutput("summary4c")),
-                     tags$li(textOutput("summary4d")),
-                     tags$li(textOutput("summary4e")),
+                     lapply(14:18, function(i) {
+                       tags$li(textOutput(summaryIDs[i]))
+                     }),
+                     
+                     # tags$li(textOutput("summary4a")),
+                     # tags$li(textOutput("summary4b")),
+                     # tags$li(textOutput("summary4c")),
+                     # tags$li(textOutput("summary4d")),
+                     # tags$li(textOutput("summary4e")),
                      type="a"
                    ),
 
                    tags$li("Outcome measures - Brain"),
                    tags$ol(
-                     tags$li(textOutput("summary5a")),
-                     tags$li(textOutput("summary5b")),
-                     tags$li(textOutput("summary5c")),
+                     lapply(19:21, function(i) {
+                       tags$li(textOutput(summaryIDs[i]))
+                     }),
+                     
+                     # tags$li(textOutput("summary5a")),
+                     # tags$li(textOutput("summary5b")),
+                     # tags$li(textOutput("summary5c")),
+                     type="a"
+                   ),
+                   
+                   tags$li("Outcome measures - Behaviour"),
+                   tags$ol(
+                     lapply(22:23, function(i) {
+                       tags$li(textOutput(summaryIDs[i]))
+                     }),
+                     
+                     # tags$li(textOutput("summary6a")),
+                     # tags$li(textOutput("summary6b")),
+                     type="a"
+                   ),
+                   
+                   tags$li("Data storage"),
+                   tags$ol(
+                     lapply(24, function(i) {
+                       tags$li(textOutput(summaryIDs[i]))
+                     }),
+                     
+                     # tags$li(textOutput("summary7a")),
                      type="a"
                    )
                  )
@@ -255,6 +390,11 @@ if (interactive()) {
                     3,2,
                     1
                     )
+    # A vector of pre-existing choices:
+    choicelist <- list(c("No", "Yes"),
+                       c("No", "Yes", "Not applicable"),
+                       c("No", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori", "Not applicable")
+    )
     
     # Check vector lengths
     if (length(checkIDs)!=ncheck) {
@@ -266,13 +406,6 @@ if (interactive()) {
     if (length(choicecode)!=ncheck) {
       stop("choicecode not equal to length of ncheck")
     }
-    
-
-    # A vector of pre-existing choices:
-    choicelist <- list(c("No", "Yes"),
-                       c("No", "Yes", "Not applicable"),
-                       c("No", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori", "Not applicable")
-                       )
     
     # Generate inputIDs
     inputIDs <- paste0("checklist", checkIDs)
@@ -433,6 +566,7 @@ if (interactive()) {
       
       output[[summaryIDs[i]]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
     }
+    
     
     # sum1a <- reactive({
     #   #ifelse(input$checklist1a=="Yes", input$response1a, "NOOOOOOO")
