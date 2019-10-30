@@ -318,8 +318,13 @@ if (interactive()) {
                          "Copy the text from your manuscript detailing which items are available. Ensure this text includes a link to access the documents"
                          )
     
+    responseIDs <- paste0("response", checkIDs)
+    
     if (length(placeholders)!=ncheck) {
       stop("placeholders not equal to length of ncheck")
+    }
+    if (length(responseIDs)!=ncheck) {
+      stop("responseIDs not equal to length of ncheck")
     }
     
     for (i in 1:ncheck) {
@@ -327,7 +332,7 @@ if (interactive()) {
         if (!input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
           return(NULL) 
         } else {
-          textInput(paste0("response", checkIDs[i]), label=NULL, placeholder=placeholders[[i]])
+          textInput(responseIDs[i], label=NULL, placeholder=placeholders[[i]])
         }
       })
     }
@@ -335,339 +340,311 @@ if (interactive()) {
 
     ########### Return text ############
     
+    textIDs <- paste0("text", checkIDs)
+    
     for (i in 1:ncheck) {
-      output[[paste0("test", checkIDs[i])]] <- renderText({
+      output[[paste0("text", checkIDs[i])]] <- renderText({
         if (input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
-          return(input[[paste0("response", checkIDs[i])]])
+          return(input[[responseIDs[i]]])
         }
       })
     }
-    
-    output$text1a <- renderText({
-      if (input$checklist1a == "Yes") {
-        return(input$response1a)
-      }
-    })
-    output$text1b <- renderText({
-      if (input$checklist1b == "Yes") {
-        return(input$response1b)
-      }
-    })
-
-
-    output$text2a <- renderText({
-      if (input$checklist2a == "Yes") {
-        return(input$response2a)
-      }
-    })
-    output$text2b <- renderText({
-      if (input$checklist2b == "Yes") {
-        return(input$response2b)
-      }
-    })
-    output$text2c <- renderText({
-      if (input$checklist2c == "Yes") {
-        return(input$response2c)
-      }
-    })
-    output$text2d <- renderText({
-      if (input$checklist2d == "Provide details") {
-        return(input$response2d)
-      }
-    })
-    output$text2e <- renderText({
-      if (input$checklist2e == "Yes") {
-        return(input$response2e)
-      }
-    })
-
-
-    output$text3a <- renderText({
-      if (input$checklist3a == "Yes") {
-        return(input$response3a)
-      }
-    })
-    output$text3b <- renderText({
-      if (input$checklist3b == "Yes") {
-        return(input$response3b)
-      }
-    })
-    output$text3c <- renderText({
-      if (input$checklist3c == "Provide details") {
-        return(input$response3c)
-      }
-    })
-    output$text3d <- renderText({
-      if (input$checklist3d == "Provide details") {
-        return(input$response3d)
-      }
-    })
-    output$text3e <- renderText({
-      if (input$checklist3e == "Provide details") {
-        return(input$response3e)
-      }
-    })
-
-
-    output$text4a <- renderText({
-      if (input$checklist4a == "Provide details") {
-        return(input$response4a)
-      }
-    })
-    output$text4b <- renderText({
-      if (input$checklist4b == "Provide details") {
-        return(input$response4b)
-      }
-    })
-    output$text4c <- renderText({
-      if (input$checklist4c == "Provide details") {
-        return(input$response4c)
-      }
-    })
-    output$text4d <- renderText({
-      if (input$checklist4d == "Provide details") {
-        return(input$response4d)
-      }
-    })
-    output$text4e <- renderText({
-      if (input$checklist4e == "Provide details") {
-        return(input$response4e)
-      }
-    })
-
-
-    output$text5a <- renderText({
-      if (input$checklist5a == "Provide details") {
-        return(input$response4a)
-      }
-    })
-    output$text5b <- renderText({
-      if (input$checklist5b == "Yes") {
-        return(input$response5b)
-      }
-    })
-    output$text5c <- renderText({
-      if (input$checklist5c == "Yes") {
-        return(input$response5c)
-      }
-    })
-
-
 
 
     ############# Report summary #############
     
-    sum1a <- reactive({
-      #ifelse(input$checklist1a=="Yes", input$response1a, "NOOOOOOO")
-      if (input$checklist1a=="Yes") {
-          return(input$response1a)
-        } else if (input$checklist1a=="No") {
-          return("Protocol and planned analyses were not pre-registered")
-        } else if (input$checklist1a=="Not applicable") {
-          return("Protocol and planned analyses were not applicable")
-        }
-    })
-    sum1b <- reactive({
-      #ifelse(input$checklist1b=="Yes", input$response1b, "NOOOOOOO")
-      if (input$checklist1b=="Yes") {
-          return(input$response1b)
-        } else if (input$checklist1b=="No") {
-          return("No justification was given for the sample size")
-        } else if (input$checklist1b=="Not applicable") {
-          return("A sample size was not applicable for this study")
-        }
-    })
+    noboilers <- c("This experiment was not preregistered",
+                   "The manuscript does not describe the sampling plan or justify the sample size used",
+                   "This experiment did not include a control group or control condition",
+                   "The experiment did not include a double-blind",
+                   "Those who rated the outcome were not blind to group assignment",
+                   "Those who analysed the data were not blind to group assignment",
+                   "No measures were taken to examine whether participants and experimenters remained blind",
+                   "The present study is a clinical efficacy study. There was no standard-of-care intervention group",
+                   "Psychosocial factors were not measured",
+                   "The manuscript does not report whether strategies were provided",
+                   "The strategies participants used were not recorded or not reported in the manuscript",
+                   "The manuscript does not report the methods used for online-data processing and artifact correction",
+                   "Condition and group effects for artifacts were not measured, or not reported in the manuscript",
+                   "The manuscript does not report how the online-feature extraction was defined",
+                   "The manuscript does not report or justify the reinforcement schedule",
+                   "The manuscript does not report the feedback modality and content",
+                   "All brain activity variable(s) and/or contrasts used for feedback, as displayed to experimental participants were not collected or are not reported in the manuscript",
+                   "The manuscript does not report the hardware and software used",
+                   "The manuscript does not report neurofeedback regulation success based on the feedback signal",
+                   "The manuscript does not plot within-session and between-session regulation blocks of feedback variable(s), as well as pre-to-post resting baselines or contrasts",
+                   "The manuscript does not statistically compare the experimental condition/group to the control condition(s)/group(s)",
+                   "The manuscript does not include measures of clinical or behavioural significance",
+                   "This manuscript does not compare regulation success and behavioural outcomes",
+                   "No additional documents related to the materials, analysis scripts, code, raw data, or final values are available for this manuscript"
+                   )
+    naboilers <- c(NA, NA, 
+                   NA, "NA: A double-blind was not appropriate for this experiment",
+                      "NA: There was only one participant group",
+                      "NA: There was only one participant group",
+                      "NA: There was only one participant group",
+                      "NA: This is not a clinical efficacy study",
+                   NA, NA, NA, NA, NA,
+                   NA, NA, NA, NA, NA,
+                   NA, NA, "NA: There was only one participant group",
+                   "NA:  the study does not take cognitive or behavioural measures",
+                      "NA:  the study does not take cognitive or behavioural measures",
+                   NA
+                   )
+    summaryIDs <- paste0("summary", checkIDs)
+    sumIDs <- paste0("sum", checkIDs)
     
-    output$summary1a <- renderText({sum1a()})
-    output$summary1b <- renderText({sum1b()})
+    if (length(noboilers)!=ncheck) {
+      stop("noboilers not equal to length of ncheck")
+    }
+    if (length(naboilers)!=ncheck) {
+      stop("naboilers not equal to length of ncheck")
+    }
+    if (length(summaryIDs)!=ncheck) {
+      stop("summaryIDs not equal to length of ncheck")
+    }
+    if (length(sumIDs)!=ncheck) {
+      stop("sumIDs not equal to length of ncheck")
+    }
     
+    for (i in 1:ncheck) {
+      assign(sumIDs[i],
+             reactive({
+               if (input[[inputIDs[i]]] == "Yes") {
+                 return(input[[responseIDs[i]]])
+               } else if (input[[inputIDs[i]]] == "No") {
+                 return(noboilers[i])
+               } else if (input[[inputIDs[i]]] == "Not applicable") {
+                 return(naboilers[i])
+               } else if (input[[inputIDs[i]]] == "Yes, and the measure was defined a priori") {
+                 return(input[[responseIDs[i]]])
+               } else if (input[[inputIDs[i]]] == "Yes, and the measure was not defined a priori") {
+                 temp <- input[[responseIDs[i]]]
+                 
+                 # Remove leading/trailing whitespace and add period if not at end
+                 temp <- trimws(temp)
+                 if (!grepl(".+\\.$", temp)) {
+                   temp <- paste0(temp, ".")
+                 }
+                 return(paste(temp, "This clinical or behavioural significance value was not defined a priori", sep=" "))
+               }
+             })
+             )
+      
+      output[[summaryIDs[i]]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
+    }
     
-    # output$summary1a <- renderText({
+    # sum1a <- reactive({
+    #   #ifelse(input$checklist1a=="Yes", input$response1a, "NOOOOOOO")
     #   if (input$checklist1a=="Yes") {
-    #     return(input$response1a)
-    #   } else if (input$checklist1a=="No") {
-    #     return("Protocol and planned analyses were not pre-registered")
-    #   } else if (input$checklist1a=="Not applicable") {
-    #     return("Protocol and planned analyses were not applicable")
-    #   }
+    #       return(input$response1a)
+    #     } else if (input$checklist1a=="No") {
+    #       return("Protocol and planned analyses were not pre-registered")
+    #     } else if (input$checklist1a=="Not applicable") {
+    #       return("Protocol and planned analyses were not applicable")
+    #     }
     # })
-
-    # output$summary1b <- renderText({
+    # sum1b <- reactive({
+    #   #ifelse(input$checklist1b=="Yes", input$response1b, "NOOOOOOO")
     #   if (input$checklist1b=="Yes") {
-    #     return(input$response1b)
-    #   } else if (input$checklist1b=="No") {
-    #     return("No justification was given for the sample size")
-    #   } else if (input$checklist1b=="Not applicable") {
-    #     return("A sample size was not applicable for this study")
+    #       return(input$response1b)
+    #     } else if (input$checklist1b=="No") {
+    #       return("No justification was given for the sample size")
+    #     } else if (input$checklist1b=="Not applicable") {
+    #       return("A sample size was not applicable for this study")
+    #     }
+    # })
+    # 
+    # output$summary1a <- renderText({sum1a()})
+    # output$summary1b <- renderText({sum1b()})
+    # 
+    # 
+    # # output$summary1a <- renderText({
+    # #   if (input$checklist1a=="Yes") {
+    # #     return(input$response1a)
+    # #   } else if (input$checklist1a=="No") {
+    # #     return("Protocol and planned analyses were not pre-registered")
+    # #   } else if (input$checklist1a=="Not applicable") {
+    # #     return("Protocol and planned analyses were not applicable")
+    # #   }
+    # # })
+    # 
+    # # output$summary1b <- renderText({
+    # #   if (input$checklist1b=="Yes") {
+    # #     return(input$response1b)
+    # #   } else if (input$checklist1b=="No") {
+    # #     return("No justification was given for the sample size")
+    # #   } else if (input$checklist1b=="Not applicable") {
+    # #     return("A sample size was not applicable for this study")
+    # #   }
+    # # })
+    # 
+    # 
+    # output$summary2a <- renderText({
+    #   if (input$checklist2a=="Yes") {
+    #     return(input$response2a)
+    #   } else if (input$checklist2a=="No") {
+    #     return("No control group(s)/condition(s) were employed in this study")
+    #   } else if (input$checklist2a=="Not applicable") {
+    #     return("Control group(s)/condition(s) were not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary2b <- renderText({
+    #   if (input$checklist2b=="Yes") {
+    #     return(input$response2b)
+    #   } else if (input$checklist2b=="No") {
+    #     return("This study did not use a double-blind design")
+    #   } else if (input$checklist2b=="Not applicable") {
+    #     return("A double-blind design was not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary2c <- renderText({
+    #   if (input$checklist2c=="Yes") {
+    #     return(input$response2c)
+    #   } else if (input$checklist2c=="No") {
+    #     return("Those who rated the outcomes or those who performed the analysis were not blinded")
+    #   } else if (input$checklist2c=="Not applicable") {
+    #     return("Blinding of those who rated the outcomes or those who performed the analysis was not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary2d <- renderText({
+    #   if (input$checklist2d=="Provide details") {
+    #     return(input$response2d)
+    #   } else if (input$checklist2d=="Not at all") {
+    #     return("Participants and experimenters did not remain blinded")
+    #   } else if (input$checklist2d=="Not applicable") {
+    #     return("Blinding of participants and experimenters was not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary2e <- renderText({
+    #   if (input$checklist2e=="Yes") {
+    #     return(input$response2e)
+    #   } else if (input$checklist2e=="No") {
+    #     return("A standard-of-care intervention group was not used as a benchmark for improvement")
+    #   } else if (input$checklist2e=="Not applicable") {
+    #     return("A standard-of-care intervention group was not applicable for this study, or this was not a clinical efficacy study")
+    #   }
+    # })
+    # 
+    # 
+    # output$summary3a <- renderText({
+    #   if (input$checklist3a=="Yes") {
+    #     return(input$response3a)
+    #   } else if (input$checklist3a=="No") {
+    #     return("Data was not collected on psychosocial factors")
+    #   } else if (input$checklist3a=="Not applicable") {
+    #     return("Data on psychosocial factors was not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary3b <- renderText({
+    #   if (input$checklist3b=="Yes") {
+    #     return(input$response3b)
+    #   } else if (input$checklist3b=="No") {
+    #     return("Participants were not provided with a strategy")
+    #   } else if (input$checklist3b=="Not applicable") {
+    #     return("Providing a strategy to participants was not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary3c <- renderText({
+    #   if (input$checklist3c=="Provide details") {
+    #     return(input$response3c)
+    #   } else if (input$checklist3c=="Not applicable") {
+    #     return("Participant strategies were not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary3d <- renderText({
+    #   if (input$checklist3d=="Provide details") {
+    #     return(input$response3d)
+    #   } else if (input$checklist3d=="Not applicable") {
+    #     return("Online data-processing and artifact collection was not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary3e <- renderText({
+    #   if (input$checklist3e=="Provide details") {
+    #     return(input$response3e)
+    #   } else if (input$checklist3e=="Not applicable") {
+    #     return("Condition and group effects for artifacts were not applicable for this study")
+    #   }
+    # })
+    # 
+    # 
+    # output$summary4a <- renderText({
+    #   if (input$checklist4a=="Provide details") {
+    #     return(input$response4a)
+    #   } else if (input$checklist4a=="Not applicable") {
+    #     return("Online-feature extraction was not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary4b <- renderText({
+    #   if (input$checklist4b=="Provide details") {
+    #     return(input$response4b)
+    #   } else if (input$checklist4b=="Not applicable") {
+    #     return("A reinforcement schedule was not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary4c <- renderText({
+    #   if (input$checklist4c=="Provide details") {
+    #     return(input$response4c)
+    #   } else if (input$checklist4c=="Not applicable") {
+    #     return("Feedback modality and content was not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary4d <- renderText({
+    #   if (input$checklist4d=="Provide details") {
+    #     return(input$response4d)
+    #   } else if (input$checklist4d=="Not applicable") {
+    #     return("Brain activity variable(s) and/or contrasts used for feedback were not applicable for this study")
+    #   }
+    # })
+    # 
+    # output$summary4e <- renderText({
+    #   if (input$checklist4e=="Provide details") {
+    #     return(input$response4e)
+    #   } else if (input$checklist4e=="Not applicable") {
+    #     return("No hardware or software were used in this study")
+    #   }
+    # })
+    # 
+    # 
+    # output$summary5a <- renderText({
+    #   if (input$checklist5a=="Provide details") {
+    #     return(input$response5a)
+    #   } else if (input$checklist5a=="Not applicable") {
+    #     return("Neurofeedback regulation success based on the feedback signal was not applicable for this study")
+    #   }
+    # })
+    # output$summary5b <- renderText({
+    #   if (input$checklist5b=="Yes") {
+    #     return(input$response5b)
+    #   } else if (input$checklist5b=="No") {
+    #     return("Within-session and between-session regulation blocks of feedback variable(s) were not plotted in this study")
+    #   } else if (input$checklist5b=="Not applicable") {
+    #     return("Plots of within-session and between-session regulation blocks of feedback variable(s) were not applicable for this study")
+    #   }
+    # })
+    # output$summary5c <- renderText({
+    #   if (input$checklist5c=="Yes") {
+    #     return(input$response5c)
+    #   } else if (input$checklist5c=="No") {
+    #     return("The experimental condition/group and the control condition(s)/group(s) were not statistically compared")
+    #   } else if (input$checklist5c=="Not applicable") {
+    #     return("Statistical comparison of the experimental condition/group and the control condition(s)/group(s) was not applicable for this study")
     #   }
     # })
 
 
-    output$summary2a <- renderText({
-      if (input$checklist2a=="Yes") {
-        return(input$response2a)
-      } else if (input$checklist2a=="No") {
-        return("No control group(s)/condition(s) were employed in this study")
-      } else if (input$checklist2a=="Not applicable") {
-        return("Control group(s)/condition(s) were not applicable for this study")
-      }
-    })
-
-    output$summary2b <- renderText({
-      if (input$checklist2b=="Yes") {
-        return(input$response2b)
-      } else if (input$checklist2b=="No") {
-        return("This study did not use a double-blind design")
-      } else if (input$checklist2b=="Not applicable") {
-        return("A double-blind design was not applicable for this study")
-      }
-    })
-
-    output$summary2c <- renderText({
-      if (input$checklist2c=="Yes") {
-        return(input$response2c)
-      } else if (input$checklist2c=="No") {
-        return("Those who rated the outcomes or those who performed the analysis were not blinded")
-      } else if (input$checklist2c=="Not applicable") {
-        return("Blinding of those who rated the outcomes or those who performed the analysis was not applicable for this study")
-      }
-    })
-
-    output$summary2d <- renderText({
-      if (input$checklist2d=="Provide details") {
-        return(input$response2d)
-      } else if (input$checklist2d=="Not at all") {
-        return("Participants and experimenters did not remain blinded")
-      } else if (input$checklist2d=="Not applicable") {
-        return("Blinding of participants and experimenters was not applicable for this study")
-      }
-    })
-
-    output$summary2e <- renderText({
-      if (input$checklist2e=="Yes") {
-        return(input$response2e)
-      } else if (input$checklist2e=="No") {
-        return("A standard-of-care intervention group was not used as a benchmark for improvement")
-      } else if (input$checklist2e=="Not applicable") {
-        return("A standard-of-care intervention group was not applicable for this study, or this was not a clinical efficacy study")
-      }
-    })
-
-
-    output$summary3a <- renderText({
-      if (input$checklist3a=="Yes") {
-        return(input$response3a)
-      } else if (input$checklist3a=="No") {
-        return("Data was not collected on psychosocial factors")
-      } else if (input$checklist3a=="Not applicable") {
-        return("Data on psychosocial factors was not applicable for this study")
-      }
-    })
-
-    output$summary3b <- renderText({
-      if (input$checklist3b=="Yes") {
-        return(input$response3b)
-      } else if (input$checklist3b=="No") {
-        return("Participants were not provided with a strategy")
-      } else if (input$checklist3b=="Not applicable") {
-        return("Providing a strategy to participants was not applicable for this study")
-      }
-    })
-
-    output$summary3c <- renderText({
-      if (input$checklist3c=="Provide details") {
-        return(input$response3c)
-      } else if (input$checklist3c=="Not applicable") {
-        return("Participant strategies were not applicable for this study")
-      }
-    })
-
-    output$summary3d <- renderText({
-      if (input$checklist3d=="Provide details") {
-        return(input$response3d)
-      } else if (input$checklist3d=="Not applicable") {
-        return("Online data-processing and artifact collection was not applicable for this study")
-      }
-    })
-
-    output$summary3e <- renderText({
-      if (input$checklist3e=="Provide details") {
-        return(input$response3e)
-      } else if (input$checklist3e=="Not applicable") {
-        return("Condition and group effects for artifacts were not applicable for this study")
-      }
-    })
-
-
-    output$summary4a <- renderText({
-      if (input$checklist4a=="Provide details") {
-        return(input$response4a)
-      } else if (input$checklist4a=="Not applicable") {
-        return("Online-feature extraction was not applicable for this study")
-      }
-    })
-
-    output$summary4b <- renderText({
-      if (input$checklist4b=="Provide details") {
-        return(input$response4b)
-      } else if (input$checklist4b=="Not applicable") {
-        return("A reinforcement schedule was not applicable for this study")
-      }
-    })
-
-    output$summary4c <- renderText({
-      if (input$checklist4c=="Provide details") {
-        return(input$response4c)
-      } else if (input$checklist4c=="Not applicable") {
-        return("Feedback modality and content was not applicable for this study")
-      }
-    })
-
-    output$summary4d <- renderText({
-      if (input$checklist4d=="Provide details") {
-        return(input$response4d)
-      } else if (input$checklist4d=="Not applicable") {
-        return("Brain activity variable(s) and/or contrasts used for feedback were not applicable for this study")
-      }
-    })
-
-    output$summary4e <- renderText({
-      if (input$checklist4e=="Provide details") {
-        return(input$response4e)
-      } else if (input$checklist4e=="Not applicable") {
-        return("No hardware or software were used in this study")
-      }
-    })
-
-
-    output$summary5a <- renderText({
-      if (input$checklist5a=="Provide details") {
-        return(input$response5a)
-      } else if (input$checklist5a=="Not applicable") {
-        return("Neurofeedback regulation success based on the feedback signal was not applicable for this study")
-      }
-    })
-    output$summary5b <- renderText({
-      if (input$checklist5b=="Yes") {
-        return(input$response5b)
-      } else if (input$checklist5b=="No") {
-        return("Within-session and between-session regulation blocks of feedback variable(s) were not plotted in this study")
-      } else if (input$checklist5b=="Not applicable") {
-        return("Plots of within-session and between-session regulation blocks of feedback variable(s) were not applicable for this study")
-      }
-    })
-    output$summary5c <- renderText({
-      if (input$checklist5c=="Yes") {
-        return(input$response5c)
-      } else if (input$checklist5c=="No") {
-        return("The experimental condition/group and the control condition(s)/group(s) were not statistically compared")
-      } else if (input$checklist5c=="Not applicable") {
-        return("Statistical comparison of the experimental condition/group and the control condition(s)/group(s) was not applicable for this study")
-      }
-    })
-
-
-    # Add option to export to PDF and/or Docx
+    ########## Add option to export to PDF and/or Docx ##########
 
     output$reportpdf <- downloadHandler(
       filename = "checklist.pdf",
