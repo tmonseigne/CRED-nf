@@ -278,7 +278,9 @@ if (interactive()) {
     inputIDs <- paste0("checklist", checkIDs)
 
     
-    ####### Observe inputs to react to selections made by user ######    
+    
+    ############ Observe inputs to react to selections made by user ############
+    
     observe({
       for (i in 1:ncheck) {
         updateSelectInput(session, inputId = inputIDs[i], label = labels[i],
@@ -287,7 +289,9 @@ if (interactive()) {
     })
     
     
-    ###### Add open end box to enter text if they user has selected "yes" #######
+    
+    ############ Add open end box to enter text if they user has selected "yes############
+    
     placeholders <- list("Copy the text from your manuscript that identifies the preregistration and includes a link to it",
                          "Copy the text from your manuscript that describes the sampling plan and justifies the sample size",
                          "Copy the text from your manuscript that describes the control group(s) and/or condition(s)",
@@ -328,120 +332,17 @@ if (interactive()) {
       })
     }
 
-    # output$new1a <- renderUI({
-    #   if (!input$checklist1a == "Yes") return(NULL) else {
-    #     textInput("response1a", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # 
-    # output$new1b <- renderUI({
-    #   if (!input$checklist1b == "Yes") return(NULL) else {
-    #     textInput("response1b", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # 
-    # output$new2a <- renderUI({
-    #   if (!input$checklist2a == "Yes") return(NULL) else {
-    #     textInput("response2a", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new2b <- renderUI({
-    #   if (!input$checklist2b == "Yes") return(NULL) else {
-    #     textInput("response2b", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new2c <- renderUI({
-    #   if (!input$checklist2c == "Yes") return(NULL) else {
-    #     textInput("response2c", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new2d <- renderUI({
-    #   if (!input$checklist2d == "Provide details") return(NULL) else {
-    #     textInput("response2d", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new2e <- renderUI({
-    #   if (!input$checklist2e == "Yes") return(NULL) else {
-    #     textInput("response2e", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # 
-    # 
-    # output$new3a <- renderUI({
-    #   if (!input$checklist3a == "Yes") return(NULL) else {
-    #     textInput("response3a", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new3b <- renderUI({
-    #   if (!input$checklist3b == "Yes") return(NULL) else {
-    #     textInput("response3b", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new3c <- renderUI({
-    #   if (!input$checklist3c == "Provide details") return(NULL) else {
-    #     textInput("response3c", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new3d <- renderUI({
-    #   if (!input$checklist3d == "Provide details") return(NULL) else {
-    #     textInput("response3d", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new3e <- renderUI({
-    #   if (!input$checklist3e == "Provide details") return(NULL) else {
-    #     textInput("response3e", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # 
-    # 
-    # output$new4a <- renderUI({
-    #   if (!input$checklist4a == "Provide details") return(NULL) else {
-    #     textInput("response4a", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new4b <- renderUI({
-    #   if (!input$checklist4b == "Provide details") return(NULL) else {
-    #     textInput("response4b", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new4c <- renderUI({
-    #   if (!input$checklist4c == "Provide details") return(NULL) else {
-    #     textInput("response4c", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new4d <- renderUI({
-    #   if (!input$checklist4d == "Provide details") return(NULL) else {
-    #     textInput("response4d", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new4e <- renderUI({
-    #   if (!input$checklist4e == "Provide details") return(NULL) else {
-    #     textInput("response4e", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # 
-    # 
-    # output$new5a <- renderUI({
-    #   if (!input$checklist5a == "Provide details") return(NULL) else {
-    #     textInput("response5a", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
-    # output$new5b <- renderUI({
-    #   if (!input$checklist5b == "Yes") return(NULL) else {
-    #     textInput("response5b", label=NULL, placeholder="Report page/figure number(s) in which plots are shown")
-    #   }
-    # })
-    # output$new5c <- renderUI({
-    #   if (!input$checklist5c == "Yes") return(NULL) else {
-    #     textInput("response5c", label=NULL, placeholder="Copy text from manuscript that meets checklist criteria")
-    #   }
-    # })
 
-
-
-
-
-    # Return text
+    ########### Return text ############
+    
+    for (i in 1:ncheck) {
+      output[[paste0("test", checkIDs[i])]] <- renderText({
+        if (input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
+          return(input[[paste0("response", checkIDs[i])]])
+        }
+      })
+    }
+    
     output$text1a <- renderText({
       if (input$checklist1a == "Yes") {
         return(input$response1a)
