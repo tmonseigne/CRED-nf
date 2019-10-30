@@ -212,10 +212,63 @@ if (interactive()) {
 
 
   server <- function(input, output, session) {
+    
+    ncheck <- 24 # Number of checklist items
+    inputIDs <- c("checklist1a", "checklist1b", 
+                  "checklist2a", "checklist2b", "checklist2c-rater", "checklist2c-stat", "checklist2d", "checklist2e",
+                  "checklist3a", "checklist3b", "checklist3c", "checklist3d", "checklist3e",
+                  "checklist4a", "checklist4b", "checklist4c", "checklist4d", "checklist4e",
+                  "checklist5a", "checklist5b", "checklist5c",
+                  "checklist6a", "checklist6b",
+                  "checklist7a"
+                  )
+    labels <- c("Was the protocol or analysis preregistered?",
+                "Does the manuscript describe the sampling plan and/or justify the sample size used?",
+                "Did the experiment include at least one control group or control condition?",
+                "Was a double-blind appropriate in the present experiment?",
+                "Were those who rate the outcomes blinded to group assignment?",
+                "Were those who analysed the data blinded to group assignment?",
+                "Were any measures taken to examine to what extend participants and experimenters remained blind?",
+                "Is this a clinical efficacy study?",
+                "Were data collected on psychosocial factors?",
+                "Does the manuscript report whether participants were provided with a strategy?",
+                "Are the strategies that participants reported using included in the manuscript?",
+                "Does the manuscript report the methods used for online-data processing and artifact correction?",
+                "Does the manuscript report condition and/or group effects for artifacts?",
+                "Does the manuscript report how the online-feature extraction was defined?",
+                "Does the manuscript report and justify the reinforcement schedule?",
+                "Does the manuscript report the feedback modality and content?",
+                "Does the manuscript report all brain activity variable(s) and/or contrasts used for feedback, as displayed to experimental participants?",
+                "Does the manuscript report the hardware and software used?",
+                "Does the manuscript report neurofeedback regulation success based on the feedback signal?",
+                "Does the manuscript plot within-session and between-session regulation blocks of feedback variable(s), as well as pre-to-post resting baselines or contrasts?",
+                "Does the manuscript statistically compare the experimental condition/group to the control condition(s)/group(s) (not only each group to baseline measures)?",
+                "Does the manuscript report measures of clinical or behavioural significance and describe whether they were reached?",
+                "Does the manuscript compare regulation success and behavioural outcomes?",
+                "Does the manuscript include a link to any open access materials, analysis scripts, code, raw data, or final values?"
+                )
+    choicecode <- c(1,1,
+                    1,2,2,2,2,2,
+                    1,1,1,1,1,
+                    1,1,1,1,1,
+                    1,1,2,
+                    3,2,
+                    1
+                    )
 
     # A vector of pre-existing choices:
-    mychoices <- c("No", "Yes", "Not applicable")
-    mychoices2 <- c("Not applicable", "Provide details")
+    choicelist <- list(c("No", "Yes"),
+                       c("No", "Yes", "Not applicable"),
+                       c("No", "Yes", "Yes/No", "Not applicable")
+                       )
+    
+    for (i in 1:ncheck) {
+      observe({
+        updateSelectInput(session, inputId = inputIDs[i], label = labels[i],
+                          choices = choicelist[[choicecode[i]]])
+      })
+    }
+    
 
     observe({
       updateSelectInput(session, inputId = "checklist1a", label = "Does the study have a pre-registered protocol including planned analyses?",
