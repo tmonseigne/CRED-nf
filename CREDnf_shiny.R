@@ -261,105 +261,19 @@ if (interactive()) {
                        c("No", "Yes", "Not applicable"),
                        c("No", "Yes", "Yes/No", "Not applicable")
                        )
-    
+
+    ####### Observe inputs to react to selections made by user ######    
     for (i in 1:ncheck) {
       observe({
         updateSelectInput(session, inputId = inputIDs[i], label = labels[i],
                           choices = choicelist[[choicecode[i]]])
       })
     }
-    
 
-    observe({
-      updateSelectInput(session, inputId = "checklist1a", label = "Does the study have a pre-registered protocol including planned analyses?",
-                        choices = mychoices)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist1b", label = "Is there a justification for the sample size used?",
-                        choices = mychoices)
-    })
-
-
-    observe({
-      updateSelectInput(session, inputId = "checklist2a", label = "Were control group(s) or control condition(s) employed?",
-                        choices = mychoices)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist2b", label = "When leveraging experimental designs where a double-blind is possible, was a double-blind design used?",
-                        choices = mychoices)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist2c", label = "Were those who rate the outcomes (including statisticians where relevant) blinded?",
-                        choices = mychoices)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist2d", label = "To what extent did participants and experimenters remain blinded?",
-                        choices = c("Not at all", "Provide details", "Not applicable"))
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist2e", label = "If this is a clinical efficacy study, was a standard-of-care intervention group used as a benchmark for improvement?",
-                        choices = mychoices)
-    })
-
-
-    observe({
-      updateSelectInput(session, inputId = "checklist3a", label = "Was data collected on psychosocial factors?",
-                        choices = mychoices)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist3b", label = "Were participants provided with a strategy?",
-                        choices = mychoices)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist3c", label = "Report the strategies participants used",
-                        choices = mychoices2)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist3d", label = "Report methods used for online data-processing and artifact collection",
-                        choices = mychoices2)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist3e", label = "Report condition and group effects for artifacts",
-                        choices = mychoices2)
-    })
-
-
-    observe({
-      updateSelectInput(session, inputId = "checklist4a", label = "Report how the online-feature extraction was defined",
-                        choices = mychoices2)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist4b", label = "Report and justify the reinforcement schedule",
-                        choices = mychoices2)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist4c", label = "Report the feedback modality and content",
-                        choices = mychoices2)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist4d", label = "Collect and report all brain activity variable(s) and/or contasts used for feedback, as displayed to experimental participants",
-                        choices = mychoices2)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist4e", label = "Report the hardware and software used",
-                        choices = mychoices2)
-    })
-
-
-    observe({
-      updateSelectInput(session, inputId = "checklist5a", label = "Report neurofeedback regulation success based on the feedback signal",
-                        choices = mychoices2)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist5b", label = "Have within-session and between-session regulation blocks of feedback variable(s) been plotted, as well as pre-to-post resting baselines or contrasts?",
-                        choices = mychoices)
-    })
-    observe({
-      updateSelectInput(session, inputId = "checklist5c", label = "Has the experimental condition/group been statistically compared to the control condition/group (not only each group to baseline variables)?",
-                        choices = mychoices)
-    })
-
-
+    # ###### Add open end box to enter text if they user has selected "yes" #######
+    # for (i in 1:ncheck) {
+    #   
+    # }
 
     # Open end box to enter text - if the user has selected "yes":
     output$new1a <- renderUI({
