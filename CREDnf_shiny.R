@@ -4,7 +4,7 @@ if (interactive()) {
   
   ncheck <- 24 # Number of checklist items
   checkIDs <- c("1a", "1b",
-                "2a", "2b", "2c-rater", "2c-stat", "2d", "2e",
+                "2a", "2b", "2c.rater", "2c.stat", "2d", "2e",
                 "3a", "3b", "3c", "3d", "3e",
                 "4a", "4b", "4c", "4d", "4e",
                 "5a", "5b", "5c",
@@ -33,6 +33,10 @@ if (interactive()) {
                      c("No", "Yes", "Not applicable"),
                      c("No", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori", "Not applicable")
   )
+  # choicelist <- list(list("No"=1, "Yes"=2),
+  #                    list("No"=1, "Yes"=2, "Not applicable"=3),
+  #                    list("No"=1, "Yes, and the measure was defined a priori"=2, "Yes, and the measure was not defined a priori"=3, "Not applicable"=4)
+  # )
   
   # Text vectors
   labels <- c("Was the protocol or analysis preregistered?",
@@ -123,6 +127,7 @@ if (interactive()) {
                  "NA:  the study does not take cognitive or behavioural measures",
                  NA
   )
+  strblank <- "This field has been left blank"
   
   
   # Run checks on vector lengths
@@ -386,7 +391,16 @@ if (interactive()) {
 
                    tags$li("Control groups"),
                    tags$ol(
-                     lapply(3:8, function(i) {
+                     lapply(3:4, function(i) {
+                       tags$li(textOutput(summaryIDs[i]))
+                     }),
+                     tags$li("Blinding of those who rate the outcome and those who analyse the data:",
+                       tags$ul(
+                         tags$li(textOutput(summaryIDs[5])),
+                         tags$li(textOutput(summaryIDs[6]))
+                       )
+                     ),
+                     lapply(7:8, function(i) {
                        tags$li(textOutput(summaryIDs[i]))
                      }),
                      
@@ -488,57 +502,145 @@ if (interactive()) {
     
     ############ Add open end box to enter text if they user has selected "yes############
     
-    for (i in 1:ncheck) {
+    output[[newIDs[1]]] <- renderUI({
+      if (!input[[inputIDs[1]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
+        return(NULL) 
+      } else {
+        textInput(responseIDs[1], label=NULL, placeholder=placeholders[[1]])
+      }
+    })
+    output[[newIDs[2]]] <- renderUI({
+      if (!input[[inputIDs[2]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
+        return(NULL) 
+      } else {
+        textInput(responseIDs[2], label=NULL, placeholder=placeholders[[2]])
+      }
+    })
+    
+    lapply(3:ncheck, function(i) {
       output[[newIDs[i]]] <- renderUI({
         if (!input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
-          return(NULL) 
+          return(NULL)
         } else {
           textInput(responseIDs[i], label=NULL, placeholder=placeholders[[i]])
         }
       })
-    }
-    
+    })
+
 
 
     ########### Return text ############
     
-    for (i in 1:ncheck) {
+    # for (i in 1:ncheck) {
+    #   output[[paste0("text", checkIDs[i])]] <- renderText({
+    #     if (input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
+    #       return(input[[responseIDs[i]]])
+    #     }
+    #   })
+    # }
+    
+    lapply(1:ncheck, function(i) {
       output[[paste0("text", checkIDs[i])]] <- renderText({
         if (input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
           return(input[[responseIDs[i]]])
         }
       })
-    }
+    })
 
 
     ############# Report summary #############
     
-    for (i in 1:ncheck) {
+    # assign(sumIDs[1],
+    #        reactive({
+    #          if (input[[inputIDs[1]]] == "Yes") {
+    #            return(input[[responseIDs[1]]])
+    #          } else if (input[[inputIDs[1]]] == "No") {
+    #            return(noboilers[1])
+    #          } else if (input[[inputIDs[1]]] == "Not applicable") {
+    #            return(naboilers[1])
+    #          } else if (input[[inputIDs[1]]] == "Yes, and the measure was defined a priori") {
+    #            return(input[[responseIDs[1]]])
+    #          } else if (input[[inputIDs[1]]] == "Yes, and the measure was not defined a priori") {
+    #            temp <- input[[responseIDs[1]]]
+    #            
+    #            # Remove leading/trailing whitespace and add period if not at end
+    #            temp <- trimws(temp)
+    #            if (!grepl(".+\\.$", temp)) {
+    #              temp <- paste0(temp, ".")
+    #            }
+    #            return(paste(temp, "This clinical or behavioural significance value was not defined a priori", sep=" "))
+    #          }
+    #        })
+    # )
+    # 
+    # output[[summaryIDs[1]]] <- renderText({eval(parse(text=paste0(sumIDs[1], "()")))})
+    
+    # for (i in 2:ncheck) {
+    #   assign(sumIDs[i],
+    #          reactive({
+    #            if (input[[inputIDs[i]]] == "Yes") {
+    #              return(input[[responseIDs[i]]])
+    #            } else if (input[[inputIDs[i]]] == "No") {
+    #              return(noboilers[i])
+    #            } else if (input[[inputIDs[i]]] == "Not applicable") {
+    #              return(naboilers[i])
+    #            } else if (input[[inputIDs[i]]] == "Yes, and the measure was defined a priori") {
+    #              return(input[[responseIDs[i]]])
+    #            } else if (input[[inputIDs[i]]] == "Yes, and the measure was not defined a priori") {
+    #              temp <- input[[responseIDs[i]]]
+    #              
+    #              # Remove leading/trailing whitespace and add period if not at end
+    #              temp <- trimws(temp)
+    #              if (!grepl(".+\\.$", temp)) {
+    #                temp <- paste0(temp, ".")
+    #              }
+    #              return(paste(temp, "This clinical or behavioural significance value was not defined a priori", sep=" "))
+    #            }
+    #          })
+    #          )
+    #   
+    #   output[[summaryIDs[i]]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
+    # }
+    
+    lapply(1:ncheck, function(i) {
       assign(sumIDs[i],
              reactive({
+               
                if (input[[inputIDs[i]]] == "Yes") {
-                 return(input[[responseIDs[i]]])
+                 if (input[[responseIDs[i]]]=="") {
+                   return(strblank)
+                 } else {
+                   return(input[[responseIDs[i]]])
+                 }
                } else if (input[[inputIDs[i]]] == "No") {
                  return(noboilers[i])
                } else if (input[[inputIDs[i]]] == "Not applicable") {
                  return(naboilers[i])
                } else if (input[[inputIDs[i]]] == "Yes, and the measure was defined a priori") {
-                 return(input[[responseIDs[i]]])
+                 if (input[[responseIDs[i]]]=="") {
+                   return(strblank)
+                 } else {
+                   return(input[[responseIDs[i]]])
+                 }
                } else if (input[[inputIDs[i]]] == "Yes, and the measure was not defined a priori") {
                  temp <- input[[responseIDs[i]]]
+                 
+                 if (temp=="") {
+                   temp <- strblank
+                 }
                  
                  # Remove leading/trailing whitespace and add period if not at end
                  temp <- trimws(temp)
                  if (!grepl(".+\\.$", temp)) {
                    temp <- paste0(temp, ".")
                  }
-                 return(paste(temp, "This clinical or behavioural significance value was not defined a priori", sep=" "))
+                 return(paste(temp, "This clinical or behavioural significance value was not defined a priori.", sep=" "))
                }
              })
-             )
+      )
       
       output[[summaryIDs[i]]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
-    }
+    })
     
     # sum1a <- reactive({
     #   #ifelse(input$checklist1a=="Yes", input$response1a, "NOOOOOOO")

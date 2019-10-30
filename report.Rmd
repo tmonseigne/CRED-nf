@@ -1,5 +1,5 @@
 ---
-title: "CRED-nf checklist summary"
+title: "CRED-nf checklist summary (checklist version 1)"
 output: pdf_document
 params:
   domain1: NA
