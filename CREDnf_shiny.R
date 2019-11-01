@@ -376,6 +376,7 @@ if (interactive()) {
 
     ############# Report summary #############
     
+    params <- list()
     lapply(1:ncheck, function(i) {
       assign(sumIDs[i],
              reactive({
@@ -414,6 +415,8 @@ if (interactive()) {
       )
       
       output[[summaryIDs[i]]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
+      
+      #params[[i]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
     })
     
     
@@ -448,11 +451,19 @@ if (interactive()) {
         file.copy("report.Rmd", tempReport, overwrite = TRUE)
 
         # Set up parameters to pass to Rmd document
-        params <- list("domain1"=c(sum1a(), sum1b()))
+        # params <- list("domain1"=c(sum1a(), sum1b()),
+        #                "domain2"=c(sum2a(), sum2b(), sum2c-rate(), sum2c-stat(), sum2d(), sum2e()),
+        #                "domain3"=c(sum3a(), sum3b(), sum3c(), sum3d(), sum3e()),
+        #                "domain4"=c(sum4a(), sum4b(), sum4c(), sum4d(), sum4e()),
+        #                "domain5"=c(sum5a(), sum5b(), sum5c()),
+        #                "domain6"=c(sum6a(), sum6b()),
+        #                "domain7"=c(sum7a())
+        #                )
 
         # Knit the document using params
+        #params <- list("domain1"=6)
         rmarkdown::render(tempReport, output_file = file,
-                          params=params,
+                          params=list("domain1"= "BADGERS"),
                           envir=new.env(parent = globalenv()) # Eval in child of global env to isolate rmd code from app code
                           )
       }

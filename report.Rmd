@@ -1,18 +1,85 @@
 ---
 title: "CRED-nf checklist summary (checklist version 1)"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: pdf_document
+classoption: landscape
+geometry: margin=2cm
 params:
   domain1: NA
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+library(kableExtra)
+library(knitr)
+```
+
+```{r}
+print(params$domain1)
+```
+
+```{r, echo=FALSE}
+ndom <- 7
+
+# details <- vector()
+# for (i in 1:ndom) {
+#   details <- append(details, params[[paste0("domain",i)]])
+# }
+
+checkIDs <- c("1a", "1b",
+                "2a", "2b", "2c", " ", "2d", "2e",
+                "3a", "3b", "3c", "3d", "3e",
+                "4a", "4b", "4c", "4d", "4e",
+                "5a", "5b", "5c",
+                "6a", "6b",
+                "7a"
+  )
+
+checkitem <- c("Pre-register experimental protocol and planned analyses",
+               "Justify sample size",
+               "Employ control group(s) or control condition(s)",
+               "When leveraging experimental designs where a double-blind is possible, use a double-blind",
+               "Blind those who rate the outcomes",
+               "Blind those who analyse the data",
+               "Examine to what extent participants and experimenters remain blinded",
+               "In clinical efficacy studies, employ a standard-of-care intervention group as a benchmark for improvement",
+               "Collect data on psychosocial factors",
+               "Report whether participants were provided with a strategy",
+               "Report the strategies participants used",
+               "Report methods used for online-data processing and artifact correction",
+               "Report condition and group effects for artifacts",
+               "Report how the online-feature extraction was defined",
+               "Report and justify the reinforcement schedule",
+               "Report the feedback modality and content",
+               "Collect and report all brain activity variable(s) and/or contrasts used for feedback, as displayed to experimental participants",
+               "Report the hardware and software used",
+               "Report neurofeedback regulation success based on the feedback signal",
+               "Plot within-session and between-session regulation blocks of feedback variable(s), as well as pre-to-post resting baselines or contrasts",
+               "Statistically compare the experimental condition/group to the control condition(s)/group(s) (not only each group to baseline measures)",
+               "Include measures of clinical or behavioural significance, defined a priori, and describe whether they were reached",
+               "Run correlational analyses between regulation success and behavioural outcomes",
+               "Upload all materials, analysis scripts, code, and raw data used for analyses, as well as final values, to an open access data repository, when feasible"
+               )
+
+table.df <- data.frame("Item.num"=checkIDs, "Checklist item"=checkitem, "Manuscript details"=checkitem)
+
 ```
 
 
-## Checklist Summary
-
-1. Pre-experiment
-  + `r params$domain1[1]`
-  + `r params$domain1[2]`
-
+\renewcommand{\arraystretch}{1.5}
+```{r}
+kable(table.df, longtable=TRUE,
+      col.names=c("Item #", "Checklist item", "Manuscript Details")) %>%
+  kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
+  row_spec(0, bold=TRUE, font_size = 12) %>%
+  column_spec(1, border_right=TRUE) %>%
+  column_spec(2, border_right=TRUE, width="20em") %>%
+  column_spec(3, width="40em") %>%
+  pack_rows("Pre-experiment", hline_after = TRUE, 1, 2) %>%
+  pack_rows("Control groups", 3, 8, hline_after = TRUE) %>%
+  pack_rows("Control measures", 9, 13, hline_before = TRUE) %>%
+  pack_rows("Feedback specifications", 14, 18) %>%
+  pack_rows("Outcome measures - brain", 19, 21) %>%
+  pack_rows("Outcome measures - behaviour", 22, 23) %>%
+  pack_rows("Data storage", 24, 24)
+```
