@@ -6,25 +6,41 @@ classoption: landscape
 geometry: margin=2cm
 params:
   domain1: NA
+  domain2: NA
+  domain3: NA
+  domain4: NA
+  domain5: NA
+  domain6: NA
+  domain7: NA
+  boilers: NA
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(kableExtra)
 library(knitr)
-```
-
-```{r}
-print(params$domain1)
+library(dplyr)
+escapestr <- function(x) {
+  x <- gsub("\\,", "\\\\,", x)
+  x <- gsub("\\.", "\\\\.", x)
+  x <- gsub("\\(", "\\\\(", x)
+  x <- gsub("\\)", "\\\\)", x)
+  x <- gsub("\\/", "\\\\/", x)
+  x <- gsub("\\?", "\\\\?", x)
+  x <- gsub("\\-", "\\\\-", x)
+  x <- gsub("\\:", "\\\\:", x)
+  
+  return(x)
+}
 ```
 
 ```{r, echo=FALSE}
 ndom <- 7
 
-# details <- vector()
-# for (i in 1:ndom) {
-#   details <- append(details, params[[paste0("domain",i)]])
-# }
+details <- vector()
+for (i in 1:ndom) {
+  details <- append(details, params[[paste0("domain",i)]])
+}
 
 checkIDs <- c("1a", "1b",
                 "2a", "2b", "2c", " ", "2d", "2e",
@@ -61,15 +77,29 @@ checkitem <- c("Pre-register experimental protocol and planned analyses",
                "Upload all materials, analysis scripts, code, and raw data used for analyses, as well as final values, to an open access data repository, when feasible"
                )
 
-table.df <- data.frame("Item.num"=checkIDs, "Checklist item"=checkitem, "Manuscript details"=checkitem)
+table.df <- data.frame("Item.num"=checkIDs, "Checklist item"=checkitem, "Manuscript details"=details)
 
+```
+
+
+```{r}
+escboil <- escapestr(details)
+# Check for matches with boilerplate
+boilmatch <- as.logical(sapply(escboil, function(x) {any(grepl(x, params$boilers))}))
 ```
 
 
 \renewcommand{\arraystretch}{1.5}
 ```{r}
-kable(table.df, longtable=TRUE,
-      col.names=c("Item #", "Checklist item", "Manuscript Details")) %>%
+hdr <- c("Item No.", "Checklist item", "Manuscript Details")
+
+table.df %>%
+  mutate(
+    Manuscript.details = cell_spec(Manuscript.details, italic=boilmatch)
+  ) %>%
+  select(Item.num, Checklist.item, Manuscript.details) %>%
+  kable(table.df, format="latex", longtable=TRUE, escape=FALSE,
+        col.names=hdr) %>%
   kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
   row_spec(0, bold=TRUE, font_size = 12) %>%
   column_spec(1, border_right=TRUE) %>%
@@ -82,4 +112,20 @@ kable(table.df, longtable=TRUE,
   pack_rows("Outcome measures - brain", 19, 21) %>%
   pack_rows("Outcome measures - behaviour", 22, 23) %>%
   pack_rows("Data storage", 24, 24)
+
+
+# kable(table.df, longtable=TRUE,
+#       col.names=c("Item #", "Checklist item", "Manuscript Details")) %>%
+#   kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
+#   row_spec(0, bold=TRUE, font_size = 12) %>%
+#   column_spec(1, border_right=TRUE) %>%
+#   column_spec(2, border_right=TRUE, width="20em") %>%
+#   column_spec(3, width="40em") %>%
+#   pack_rows("Pre-experiment", hline_after = TRUE, 1, 2) %>%
+#   pack_rows("Control groups", 3, 8, hline_after = TRUE) %>%
+#   pack_rows("Control measures", 9, 13, hline_before = TRUE) %>%
+#   pack_rows("Feedback specifications", 14, 18) %>%
+#   pack_rows("Outcome measures - brain", 19, 21) %>%
+#   pack_rows("Outcome measures - behaviour", 22, 23) %>%
+#   pack_rows("Data storage", 24, 24)
 ```
