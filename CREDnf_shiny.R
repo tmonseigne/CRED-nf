@@ -356,7 +356,7 @@ if (interactive()) {
         if (!input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
           return(NULL)
         } else {
-          textInput(responseIDs[i], label=NULL, placeholder=placeholders[[i]])
+          textAreaInput(responseIDs[i], label=NULL, placeholder=placeholders[[i]])
         }
       })
     })
