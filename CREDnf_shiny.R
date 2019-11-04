@@ -164,12 +164,22 @@ if (interactive()) {
   ########################## START UI #############################
   
   ui <- fluidPage(
-    titlePanel("CRED-nf Checklist"),
+    titlePanel(h2("CRED-nf Checklist")),
 
     navlistPanel(
       "Domains",
-      tabPanel("Pre-experiment",
-               h3("Pre-Experiment"),
+      tabPanel(h5("About"),
+               column(width=7,
+                 h1("CRED-nf checklist"),
+                 p("This is an online tool to help users complete the CRED-nf checklist for neurofeedback studies. Answering a series of questions and copying relevant sections from your manuscript autocompletes the form, and this can then be used to generate a PDF report that can be submitted alongside the manuscript.", style = "font-size:17px"),
+                 br(),
+                 p("For full details of the checklist criteria and the motivation for its development plase see: REFERENCE", style = "font-size:17px"),
+                 br(),
+                 p("This tool was created by Hugo Pedder and Robert Thibault, with feedback from the developers of the CRED-nf checklist.", style = "font-size:17px")
+                 )
+          ),
+      tabPanel(h5("Pre-experiment"),
+               h2("Pre-Experiment"),
                lapply(1:2, function(i) {
                  wellPanel(
                    selectInput(inputIDs[i], h4(),
@@ -180,8 +190,8 @@ if (interactive()) {
                })
                ),
 
-      tabPanel("Control groups",
-               h3("Control groups"),
+      tabPanel(h5("Control groups"),
+               h2("Control groups"),
                lapply(3:8, function(i) {
                  wellPanel(
                    selectInput(inputIDs[i], h4(),
@@ -192,8 +202,8 @@ if (interactive()) {
                })
                ),
 
-      tabPanel("Control measures",
-               h3("Control measures"),
+      tabPanel(h5("Control measures"),
+               h2("Control measures"),
                lapply(9:13, function(i) {
                  wellPanel(
                    selectInput(inputIDs[i], h4(),
@@ -204,8 +214,8 @@ if (interactive()) {
                })
       ),
 
-      tabPanel("Feedback specifications",
-               h3("Feedback specifications"),
+      tabPanel(h5("Feedback specifications"),
+               h2("Feedback specifications"),
                lapply(14:18, function(i) {
                  wellPanel(
                    selectInput(inputIDs[i], h4(),
@@ -216,8 +226,8 @@ if (interactive()) {
                })
                ),
 
-      tabPanel("Outcome measures - Brain",
-               h3("Outcome measures - Brain"),
+      tabPanel(h5("Outcome measures - Brain"),
+               h2("Outcome measures - Brain"),
                lapply(19:21, function(i) {
                  wellPanel(
                    selectInput(inputIDs[i], h4(),
@@ -227,8 +237,8 @@ if (interactive()) {
                  )
                })
                ),
-      tabPanel("Outcome measures - Behaviour",
-               h3("Outcome measures - Behaviour"),
+      tabPanel(h5("Outcome measures - Behaviour"),
+               h2("Outcome measures - Behaviour"),
                lapply(22:23, function(i) {
                  wellPanel(
                    selectInput(inputIDs[i], h4(),
@@ -238,8 +248,8 @@ if (interactive()) {
                  )
                })
                ),
-      tabPanel("Data storage",
-               h3("Outcome measures - Brain"),
+      tabPanel(h5("Data storage"),
+               h2("Outcome measures - Brain"),
                lapply(24, function(i) {
                  wellPanel(
                    selectInput(inputIDs[i], h4(),
@@ -249,12 +259,12 @@ if (interactive()) {
                  )
                })
                ),
-      tabPanel("Checklist summary",
+      tabPanel(h5("Checklist summary"),
                tags$span(style="color:red", 
                          strong(em(textOutput("warningtext")))
                          ),
                
-               h3("CRED-nf checklist summary output"),
+               h2("CRED-nf checklist summary output"),
                tags$div(
                  tags$ol(
                    tags$li("Pre-experiment"),
