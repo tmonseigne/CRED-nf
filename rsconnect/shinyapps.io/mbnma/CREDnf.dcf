@@ -1,0 +1,13 @@
+name: CREDnf
+title: CREDnf
+username:
+account: mbnma
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1477705
+bundleId: 2591945
+url: https://mbnma.shinyapps.io/CREDnf/
+when: 1573830560.71152
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: 6.CREDnfChecklist_06oct2019.docx|CREDnf_ShinyApp_Instructions.docx|README.md
