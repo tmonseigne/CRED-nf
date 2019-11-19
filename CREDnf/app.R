@@ -176,12 +176,18 @@ ui <- fluidPage(
                  #        br(),
                  #        p("This tool was created by Hugo Pedder and Robert Thibault, with feedback from the developers of the CRED-nf checklist.", style = "font-size:17px")
                  # )
-                 h1("CRED-nf checklist"),
-                 p("This is an online tool to help users complete the CRED-nf checklist for neurofeedback studies. Answering a series of questions and copying relevant sections from your manuscript autocompletes the form, and this can then be used to generate a PDF report that can be submitted alongside the manuscript.", style = "font-size:15px"),
+                 #h1("Consensus on the reporting and experimental design of clinical and cognitive-behavioural neurofeedback studies (CRED-nf checklist)"),
+                 tags$div(HTML("<h1><u>C</u>onsensus on the <u>r</u>eporting and <u>e</u>xperimental <u>d</u>esign of clinical and cognitive-beharioural <u>n</u>eurofeedback studies (CRED-nf checklist)</h1>")),
+                 tags$div(p("This webpage serves as an online tool to standardize reporting of the", 
+                            a(href="https://psyarxiv.com/nyx84/", "CRED-nf checklist."), 
+                            "Please select the tabs on the left and answer the questions provided. When you respond ‘Yes’ to an item, you will be prompted to copy-paste the text from your manuscript that addresses the item.", style = "font-size:15px")),
                  br(),
-                 p("For full details of the checklist criteria and the motivation for its development plase see: REFERENCE", style = "font-size:15px"),
+                 p("When completed, click the ‘Download summary’ button from the ‘Checklist summary’ tab. This will produce a table which you can include in your manuscript submission as supplementary material.", style = "font-size:15px"),
                  br(),
-                 p("This tool was created by Hugo Pedder and Robert Thibault, with feedback from the developers of the CRED-nf checklist.", style = "font-size:15px")
+                 tags$div(p("For full details about this checklist, the criteria regarding each item, and the motivation for its development, please see", 
+                            a(href="https://psyarxiv.com/nyx84/", "the associated manuscript here."), style = "font-size:15px")),
+                 br(),
+                 p("This tool was created by Hugo Pedder and Robert Thibault of the University of Bristol. The content is taken from the published version of the CRED-nf checklist.", style = "font-size:15px")
         ),
         tabPanel(h5("Pre-experiment"),
                  h2("Pre-Experiment"),
