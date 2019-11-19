@@ -20,18 +20,20 @@ responseIDs <- paste0("response", checkIDs)
 
 # An index of choices and vector of pre-existing choices
 choicecode <- c(1,1,
-                1,4,2,2,2,5,
+                1,4,7,7,2,5,
                 1,1,1,1,1,
                 1,1,1,1,1,
-                1,1,2,
-                3,2,
+                1,1,7,
+                6,6,
                 1
 )
 choicelist <- list(c("No", "Yes"),
                    c("No", "Yes", "Not applicable"),
                    c("No", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori", "Not applicable"),
                    c("No", "Yes, but a double-blind was not used", "Yes, and a double-blind was used"),
-                   c("No", "Yes, and a standard-of-care intervention group was not used as a benchmark for improvement", "Yes, and a standard-of-care intervention group was used as a benchmark for improvement")
+                   c("No", "Yes, and a standard-of-care intervention group was not used as a benchmark for improvement", "Yes, and a standard-of-care intervention group was used as a benchmark for improvement"),
+                   c("No", "Yes", "Not applicable, the study does not take cognitive or behavioural measures"),
+                   c("No", "Yes", "Not applicable, there was only one participant group")
 )
 
 
@@ -396,7 +398,8 @@ server <- function(input, output, session) {
                    
                    if (input[[inputIDs[i]]] %in% c("Yes", 
                                                    "Yes, and the measure was defined a priori",
-                                                   "Yes, and a double-blind was used")) {
+                                                   "Yes, and a double-blind was used",
+                                                   "Yes, and a standard-of-care intervention group was used as a benchmark for improvement")) {
                        if (input[[responseIDs[i]]]=="") {
                            return(strblank)
                        } else {
@@ -404,7 +407,9 @@ server <- function(input, output, session) {
                        }
                    } else if (input[[inputIDs[i]]] == "No") {
                        return(noboilers[i])
-                   } else if (input[[inputIDs[i]]] == "Not applicable") {
+                   } else if (input[[inputIDs[i]]] %in% c("Not applicable",
+                                                          "Not applicable, the study does not take cognitive or behavioural measures",
+                                                          "Not applicable, there was only one participant group")) {
                        return(naboilers[i])
                    } else if (input[[inputIDs[i]]] == "Yes, and the measure was not defined a priori") {
                        temp <- input[[responseIDs[i]]]
