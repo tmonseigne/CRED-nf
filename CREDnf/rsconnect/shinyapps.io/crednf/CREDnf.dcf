@@ -1,0 +1,12 @@
+name: CREDnf
+title: CREDnf
+username:
+account: crednf
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1495023
+bundleId: 2601126
+url: https://crednf.shinyapps.io/CREDnf/
+when: 1574184272.06223
+asMultiple: FALSE
+asStatic: FALSE

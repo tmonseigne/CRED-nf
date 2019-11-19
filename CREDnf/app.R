@@ -167,7 +167,7 @@ ui <- fluidPage(
     
     navlistPanel(
         "Domains",
-        tabPanel(h5("About"),
+        tabPanel("About",
                  # column(width=7,
                  #        h1("CRED-nf checklist"),
                  #        p("This is an online tool to help users complete the CRED-nf checklist for neurofeedback studies. Answering a series of questions and copying relevant sections from your manuscript autocompletes the form, and this can then be used to generate a PDF report that can be submitted alongside the manuscript.", style = "font-size:17px"),
@@ -189,7 +189,7 @@ ui <- fluidPage(
                  br(),
                  p("This tool was created by Hugo Pedder and Robert Thibault of the University of Bristol. The content is taken from the published version of the CRED-nf checklist.", style = "font-size:15px")
         ),
-        tabPanel(h5("Pre-experiment"),
+        tabPanel("Pre-experiment",
                  h2("Pre-Experiment"),
                  lapply(1:2, function(i) {
                      wellPanel(
@@ -201,7 +201,7 @@ ui <- fluidPage(
                  })
         ),
         
-        tabPanel(h5("Control groups"),
+        tabPanel("Control groups",
                  h2("Control groups"),
                  lapply(3:8, function(i) {
                      wellPanel(
@@ -213,7 +213,7 @@ ui <- fluidPage(
                  })
         ),
         
-        tabPanel(h5("Control measures"),
+        tabPanel("Control measures",
                  h2("Control measures"),
                  lapply(9:13, function(i) {
                      wellPanel(
@@ -225,7 +225,7 @@ ui <- fluidPage(
                  })
         ),
         
-        tabPanel(h5("Feedback specifications"),
+        tabPanel("Feedback specifications",
                  h2("Feedback specifications"),
                  lapply(14:18, function(i) {
                      wellPanel(
@@ -237,7 +237,7 @@ ui <- fluidPage(
                  })
         ),
         
-        tabPanel(h5("Outcome measures - Brain"),
+        tabPanel("Outcome measures - Brain",
                  h2("Outcome measures - Brain"),
                  lapply(19:21, function(i) {
                      wellPanel(
@@ -248,7 +248,7 @@ ui <- fluidPage(
                      )
                  })
         ),
-        tabPanel(h5("Outcome measures - Behaviour"),
+        tabPanel("Outcome measures - Behaviour",
                  h2("Outcome measures - Behaviour"),
                  lapply(22:23, function(i) {
                      wellPanel(
@@ -259,7 +259,7 @@ ui <- fluidPage(
                      )
                  })
         ),
-        tabPanel(h5("Data storage"),
+        tabPanel("Data storage",
                  h2("Outcome measures - Brain"),
                  lapply(24, function(i) {
                      wellPanel(
@@ -270,7 +270,7 @@ ui <- fluidPage(
                      )
                  })
         ),
-        tabPanel(h5("Checklist summary"),
+        tabPanel("Checklist summary",
                  tags$span(style="color:red", 
                            strong(em(textOutput("warningtext")))
                  ),
