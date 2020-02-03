@@ -186,7 +186,7 @@ ui <- fluidPage(
                  textInput("title", label="Manuscript title", width="80%"),
                  textInput("author", label="Corresponding author name", width="80%"),
                  textInput("email", label="Corresponding author email", width="80%")),
-        tabPanel("Pre-experiment",
+        tabPanel("1. Pre-experiment",
                  h2("Pre-Experiment"),
                  lapply(1:2, function(i) {
                      wellPanel(
@@ -198,7 +198,7 @@ ui <- fluidPage(
                  })
         ),
         
-        tabPanel("Control groups",
+        tabPanel("2. Control groups",
                  h2("Control groups"),
                  lapply(3:8, function(i) {
                      wellPanel(
@@ -210,7 +210,7 @@ ui <- fluidPage(
                  })
         ),
         
-        tabPanel("Control measures",
+        tabPanel("3. Control measures",
                  h2("Control measures"),
                  lapply(9:13, function(i) {
                      wellPanel(
@@ -222,7 +222,7 @@ ui <- fluidPage(
                  })
         ),
         
-        tabPanel("Feedback specifications",
+        tabPanel("4. Feedback specifications",
                  h2("Feedback specifications"),
                  lapply(14:18, function(i) {
                      wellPanel(
@@ -234,7 +234,7 @@ ui <- fluidPage(
                  })
         ),
         
-        tabPanel("Outcome measures - Brain",
+        tabPanel("5. Outcome measures - Brain",
                  h2("Outcome measures - Brain"),
                  lapply(19:21, function(i) {
                      wellPanel(
@@ -245,7 +245,7 @@ ui <- fluidPage(
                      )
                  })
         ),
-        tabPanel("Outcome measures - Behaviour",
+        tabPanel("6. Outcome measures - Behaviour",
                  h2("Outcome measures - Behaviour"),
                  lapply(22:23, function(i) {
                      wellPanel(
@@ -256,8 +256,8 @@ ui <- fluidPage(
                      )
                  })
         ),
-        tabPanel("Data storage",
-                 h2("Outcome measures - Brain"),
+        tabPanel("7. Data storage",
+                 h2("Data storage"),
                  lapply(24, function(i) {
                      wellPanel(
                          selectInput(inputIDs[i], h4(),
