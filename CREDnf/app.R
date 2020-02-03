@@ -23,7 +23,7 @@ choicecode <- c(1,1,
                 1,4,7,7,2,5,
                 1,1,1,1,1,
                 1,1,1,1,1,
-                1,1,7,
+                1,8,7,
                 6,6,
                 1
 )
@@ -33,7 +33,8 @@ choicelist <- list(c("No", "Yes"),
                    c("No", "Yes, but a double-blind was not used", "Yes, and a double-blind was used"),
                    c("No", "Yes, and a standard-of-care intervention group was not used as a benchmark for improvement", "Yes, and a standard-of-care intervention group was used as a benchmark for improvement"),
                    c("No", "Yes", "Not applicable, the study does not take cognitive or behavioural measures"),
-                   c("No", "Yes", "Not applicable, there was only one participant group")
+                   c("No", "Yes", "Not applicable, there was only one participant group"),
+                   c("No", "Partially", "Yes")
 )
 
 
@@ -171,7 +172,7 @@ ui <- fluidPage(
                  tags$div(HTML("<h1><u>C</u>onsensus on the <u>r</u>eporting and <u>e</u>xperimental <u>d</u>esign of clinical and cognitive-beharioural <u>n</u>eurofeedback studies (CRED-nf checklist)</h1>")),
                  tags$div(p("This webpage serves as an online tool to standardize reporting of the", 
                             a(href="https://psyarxiv.com/nyx84/", "CRED-nf checklist."), 
-                            "Please select the tabs on the left and answer the questions provided. When you respond ‘Yes’ to an item, you will be prompted to copy-paste the text from your manuscript that addresses the item.", style = "font-size:15px")),
+                            "Please select the tabs on the left and answer the questions provided. When you respond ‘Yes’ to an item, you will be prompted to copy-paste the text from your manuscript that addresses the item. We recommend you also save this copy-pasted text in a text document in case this webpage has a timeout issue.", style = "font-size:15px")),
                  br(),
                  p("When completed, click the ‘Download summary’ button from the ‘Checklist summary’ tab. This will produce a table which you can include in your manuscript submission as supplementary material.", style = "font-size:15px"),
                  br(),
@@ -366,7 +367,12 @@ server <- function(input, output, session) {
     
     lapply(1:ncheck, function(i) {
         output[[newIDs[i]]] <- renderUI({
-            if (!input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori", "Yes, and a double-blind was used", "Yes, and a standard-of-care intervention group was used as a benchmark for improvement")) {
+            if (!input[[inputIDs[i]]] %in% c("Yes", 
+                                             "Yes, and the measure was defined a priori", 
+                                             "Yes, and the measure was not defined a priori", 
+                                             "Yes, and a double-blind was used", 
+                                             "Yes, and a standard-of-care intervention group was used as a benchmark for improvement",
+                                             "Partially")) {
                 return(NULL)
             } else {
                 textAreaInput(responseIDs[i], label=NULL, placeholder=placeholders[[i]])
@@ -397,7 +403,8 @@ server <- function(input, output, session) {
                    if (input[[inputIDs[i]]] %in% c("Yes", 
                                                    "Yes, and the measure was defined a priori",
                                                    "Yes, and a double-blind was used",
-                                                   "Yes, and a standard-of-care intervention group was used as a benchmark for improvement")) {
+                                                   "Yes, and a standard-of-care intervention group was used as a benchmark for improvement",
+                                                   "Partially")) {
                        if (input[[responseIDs[i]]]=="") {
                            return(strblank)
                        } else {
