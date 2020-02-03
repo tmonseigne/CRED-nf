@@ -182,7 +182,10 @@ ui <- fluidPage(
                  tags$div(p("This tool is currently a Beta version, and has been created by Hugo Pedder and Robert Thibault of the University of Bristol. The content is taken from the published version of the CRED-nf checklist. If you encounter any bugs when using it or have any feedback, please email robert.thibault@bristol.ac.uk with the subject `CRED-nf Shiny App` or raise an issue on",
                           a(href="www.github.com/hugaped/CRED-nf", "GitHub"), style = "font-size:15px"))
         ),
-        tabPanel("Manuscript information"),
+        tabPanel("Manuscript information",
+                 textInput("title", label="Manuscript title", width="80%"),
+                 textInput("author", label="Corresponding author name", width="80%"),
+                 textInput("email", label="Corresponding author email", width="80%")),
         tabPanel("Pre-experiment",
                  h2("Pre-Experiment"),
                  lapply(1:2, function(i) {
@@ -364,7 +367,11 @@ server <- function(input, output, session) {
     })
     
     ############ Add text boxes for manuscript info, etc #########
-    
+    assign("title", renderText({input$title}))
+    assign("author", renderText({input$author}))
+    assign("email", renderText({input$email}))
+
+  
     ############ Add open end box to enter text if they user has selected "yes############
     
     lapply(1:ncheck, function(i) {
@@ -475,7 +482,8 @@ server <- function(input, output, session) {
             file.copy("report.Rmd", tempReport, overwrite = TRUE)
             
             # Set up parameters to pass to Rmd document
-            params <- list("domain1"=c(sum1a(), sum1b()),
+            params <- list("title"=title(), "author"=author(), "email"=email(),
+                           "domain1"=c(sum1a(), sum1b()),
                            "domain2"=c(sum2a(), sum2b(), sum2c.rater(), sum2c.stat(), sum2d(), sum2e()),
                            "domain3"=c(sum3a(), sum3b(), sum3c(), sum3d(), sum3e()),
                            "domain4"=c(sum4a(), sum4b(), sum4c(), sum4d(), sum4e()),

@@ -15,6 +15,9 @@ header-includes:
 - \pagestyle{fancy}
 - \fancypagestyle{plain}{\pagestyle{fancy}}
 params:
+  title: NA
+  author: NA
+  email: NA
   domain1: NA
   domain2: NA
   domain3: NA
@@ -24,6 +27,7 @@ params:
   domain7: NA
   boilers: NA
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -97,6 +101,13 @@ escboil <- escapestr(details)
 # Check for matches with boilerplate
 boilmatch <- as.logical(sapply(escboil, function(x) {any(grepl(x, params$boilers))}))
 ```
+
+
+**Manuscript title:** `r params$title`  
+**Corresponding Author:** `r params$author`  
+**Corresponding author email:** `r params$email`  
+&nbsp;
+
 
 
 
