@@ -182,6 +182,7 @@ ui <- fluidPage(
                  tags$div(p("This tool is currently a Beta version, and has been created by Hugo Pedder and Robert Thibault of the University of Bristol. The content is taken from the published version of the CRED-nf checklist. If you encounter any bugs when using it or have any feedback, please email robert.thibault@bristol.ac.uk with the subject `CRED-nf Shiny App` or raise an issue on",
                           a(href="www.github.com/hugaped/CRED-nf", "GitHub"), style = "font-size:15px"))
         ),
+        tabPanel("Manuscript information"),
         tabPanel("Pre-experiment",
                  h2("Pre-Experiment"),
                  lapply(1:2, function(i) {
@@ -362,6 +363,7 @@ server <- function(input, output, session) {
         }
     })
     
+    ############ Add text boxes for manuscript info, etc #########
     
     ############ Add open end box to enter text if they user has selected "yes############
     
