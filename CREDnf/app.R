@@ -169,7 +169,7 @@ ui <- fluidPage(
     navlistPanel(
         "Domains",
         tabPanel("About",
-                 tags$div(HTML("<h1><u>C</u>onsensus on the <u>r</u>eporting and <u>e</u>xperimental <u>d</u>esign of clinical and cognitive-beharioural <u>n</u>eurofeedback studies (CRED-nf checklist)</h1>")),
+                 tags$div(HTML("<h1><u>C</u>onsensus on the <u>r</u>eporting and <u>e</u>xperimental <u>d</u>esign of clinical and cognitive-beharioural <u>n</u>euro<u>f</u>eedback studies (CRED-nf checklist)</h1>")),
                  tags$div(p("This webpage serves as an online tool to standardize reporting of the", 
                             a(href="https://psyarxiv.com/nyx84/", "CRED-nf checklist."), 
                             "Please select the tabs on the left and answer the questions provided. When you respond ‘Yes’ to an item, you will be prompted to copy-paste the text from your manuscript that addresses the item. We recommend you also save this copy-pasted text in a text document in case this webpage has a timeout issue.", style = "font-size:15px")),
