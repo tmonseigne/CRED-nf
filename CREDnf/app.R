@@ -180,7 +180,7 @@ ui <- fluidPage(
                             a(href="https://psyarxiv.com/nyx84/", "the associated manuscript here."), style = "font-size:15px")),
                  br(),
                  tags$div(p("This tool is currently a Beta version, and has been created by Hugo Pedder and Robert Thibault of the University of Bristol. The content is taken from the published version of the CRED-nf checklist. If you encounter any bugs when using it or have any feedback, please email robert.thibault@bristol.ac.uk with the subject `CRED-nf Shiny App` or raise an issue on",
-                          a(href="www.github.com/hugaped/CRED-nf", "GitHub"), style = "font-size:15px"))
+                          a(href="https://www.github.com/hugaped/CRED-nf", "GitHub"), style = "font-size:15px"))
         ),
         tabPanel("Manuscript information",
                  textInput("title", label="Manuscript title", width="80%"),
