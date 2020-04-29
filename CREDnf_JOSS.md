@@ -29,6 +29,8 @@ This CRED-nf online tool is an R Shiny app that accompanies the development of t
 
 It has been designed to be used by any researchers conducting a neurofeedback study and can be accessed via a URL posted on journal websites. The code for the app can easily be adapted for developers of other checklists in the future, which can hopefully then be used to improve the quality and reporting of studies in other fields of research.
 
+The CRED-nf online checklist is hosted at: https://github.com/hugaped/CRED-nf/
+
 
 # Acknowledgements
 

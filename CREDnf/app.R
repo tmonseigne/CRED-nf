@@ -10,7 +10,7 @@ checkIDs <- c("1a", "1b",
               "7a"
 )
 
-# Vectors of IDs
+# Vectors of checklist IDs
 inputIDs <- paste0("checklist", checkIDs)  # Generate inputIDs
 newIDs <- paste0("new", checkIDs)  # Generate newIDs
 textIDs <- paste0("text", checkIDs)  # Generate textIDs
@@ -372,7 +372,7 @@ server <- function(input, output, session) {
     assign("email", renderText({input$email}))
 
   
-    ############ Add open end box to enter text if they user has selected "yes############
+    ############ Add open end box to enter text if they user has selected "yes" ############
     
     lapply(1:ncheck, function(i) {
         output[[newIDs[i]]] <- renderUI({
@@ -402,7 +402,7 @@ server <- function(input, output, session) {
     })
     
     
-    ############# Report summary #############
+    ############# Generate report summary #############
     
     params <- list()
     lapply(1:ncheck, function(i) {
@@ -494,16 +494,12 @@ server <- function(input, output, session) {
             )
             
             # Knit the document using params
-            #params <- list("domain1"=6)
             rmarkdown::render(tempReport, output_file = file,
                               params=params,
-                              envir=new.env(parent = globalenv()) # Eval in child of global env to isolate rmd code from app code
+                              envir=new.env(parent = globalenv()) # Eval in child of global env to isolate Rmd code from app code
             )
         }
     )
-    
-    
-    # Add warning (and specify number) of any responses marked as "NO" at start of summary before output
     
 }
 
