@@ -47,7 +47,7 @@ array (>= 2.41)
 
 Automatic testing can be performed using the `shinytest` R package. Two test files exist - one for testing checklist domains 1-3 and one for testing checklist domains 4-7. Both sets of tests can be performed simultaneously by running the `RunTests.R` script.
 
-One component of the app that cannot be tested automatically is the generation of the PDF report. Testing for this must be performed manually. To do so, run the app and navigate to the `Checklist Summary` tab. Clicking the `Download Summary` button should generate a PDF saved in a temporary location that will open automatically. Responses in the PDF should match those shown in the `Checklist Summary` tab of the app.
+One component of the app that cannot be tested automatically is the generation of the PDF report. Testing for this must be performed manually. To do so, run the app and navigate to the `Checklist Summary` tab. Clicking the `Download Summary` button should generate a PDF saved in a temporary location that will open automatically. Responses in the PDF should match those entered into the app and shown in the `Checklist Summary` tab.
 
 
 ## References
