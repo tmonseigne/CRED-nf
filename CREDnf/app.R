@@ -5,142 +5,57 @@
 library(shiny)
 
 # Number of checklist items
-ncheck <- 24
+ncheck <- 7
 
 # List of item ID
-checkIDs <- c("1a", "1b",
-							"2a", "2b", "2c.rater", "2c.stat", "2d", "2e",
-							"3a", "3b", "3c", "3d", "3e",
-							"4a", "4b", "4c", "4d", "4e",
-							"5a", "5b", "5c",
-							"6a", "6b",
-							"7a"
-)
+checkIDs <- c("1a", "2a", "3a", "4a", "5a", "6a", "6b")
 
 # Copy of checklist IDs vectors
-inputIDs <- paste0("checklist", checkIDs)  # Generate inputIDs
-newIDs <- paste0("new", checkIDs)  # Generate newIDs
-textIDs <- paste0("text", checkIDs)  # Generate textIDs
-summaryIDs <- paste0("summary", checkIDs)  # Generate summaryIDs
+inputIDs <- paste0("checklist", checkIDs)	# Generate inputIDs
+newIDs <- paste0("new", checkIDs)					# Generate newIDs
+textIDs <- paste0("text", checkIDs)				# Generate textIDs
+summaryIDs <- paste0("summary", checkIDs)	# Generate summaryIDs
 sumIDs <- paste0("sum", checkIDs)
 responseIDs <- paste0("response", checkIDs)
 
 # Lisdt of possible choice in formular
-choicelist <- list(c("No", "Yes"),
-									 c("No", "Yes", "Not applicable"),
-									 c("No", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori", "Not applicable"),
-									 c("No", "Yes, but a double-blind was not used", "Yes, and a double-blind was used"),
-									 c("No", "Yes, and a standard-of-care intervention group was not used as a benchmark for improvement", "Yes, and a standard-of-care intervention group was used as a benchmark for improvement"),
-									 c("No", "Yes", "Not applicable, the study does not take cognitive or behavioural measures"),
-									 c("No", "Yes", "Not applicable, there was only one participant group"),
-									 c("No", "Partially", "Yes")
-)
+choicelist <- list(c("No", "Yes"), c("No", "Partially", "Yes"))
 
 # An index of choices and vector of pre-existing choices see choiceList
-choicecode <- c(1,1,
-								1,4,7,7,2,5,
-								1,1,1,1,1,
-								1,1,1,1,1,
-								1,8,7,
-								6,6,
-								1
-)
+choicecode <- c(1,1,1,1,1,1,1)
+
+# Domains
+domains <- c("Recruitment phase", 
+						 "Beginning of the first NF/BCI training session",
+						 "Beginning of each NF/BCI session", 
+						 "During NF/BCI sessions",
+						 "End of the last NF/BCI session",
+						 "Additional phase")
 
 # Questions
-labels <- c("Was the protocol or analysis preregistered?",
-						"Does the manuscript describe the sampling plan and/or justify the sample size used?",
-						"Did the experiment include at least one control group or control condition?",
-						"Was a double-blind appropriate in the present experiment?",
-						"Were those who rate the outcomes blinded to group assignment?",
-						"Were those who analysed the data blinded to group assignment?",
-						"Were any measures taken to examine to what extend participants and experimenters remained blind?",
-						"Is this a clinical efficacy study?",
-						"Were data collected on psychosocial factors?",
-						"Does the manuscript report whether participants were provided with a strategy?",
-						"Does the manuscript describe the strategies that participants reported using?",
-						"Does the manuscript report the methods used for online-data processing and artifact correction?",
-						"Does the manuscript report condition and/or group effects for artifacts?",
-						"Does the manuscript report how the online-feature extraction was defined?",
-						"Does the manuscript report and justify the reinforcement schedule?",
-						"Does the manuscript report the feedback modality and content?",
-						"Does the manuscript report all brain activity variable(s) and/or contrasts used for feedback, as displayed to experimental participants?",
-						"Does the manuscript report the hardware and software used?",
-						"Does the manuscript report neurofeedback regulation success based on the feedback signal?",
-						"Does the manuscript plot within-session and between-session regulation blocks of feedback variable(s), as well as pre-to-post resting baselines or contrasts?",
-						"Does the manuscript statistically compare the experimental condition/group to the control condition(s)/group(s) (not only each group to baseline measures)?",
-						"Does the manuscript report measures of clinical or behavioural significance and describe whether they were reached?",
-						"Does the manuscript compare regulation success and behavioural outcomes?",
-						"Does the manuscript include a link to any open access materials, analysis scripts, code, raw data, or final values?"
-)
+labels <- c("Did you provide any instructions during the recruitment phase?",
+						"Did you provide any instructions at the very beginning of the NF/BCI training procedure (first session)?",
+						"Did you provide any instructions at the beginning of each session of the NF/BCI training procedure?",
+						"Did you provide any instructions during the NF/BCI training sessions?",
+						"Did you provide any instructions at the end of the NF/BCI training procedure (end of the last session)?",
+						"Did your experiment include an additional phase (e.g., transfer phase, at-home training, without NF) during which different instructions were given?",
+						"Did you provide any instructions before or during this additional phase?")
 
 # Default message (in grey) in the text area when ye is selected
-placeholders <- list("Copy the text from your manuscript that identifies the preregistration and includes a link to it",
-										 "Copy the text from your manuscript that describes the sampling plan and justifies the sample size",
-										 "Copy the text from your manuscript that describes the control group(s) and/or condition(s)",
-										 "Copy the text from your manuscript that describes the double-blind and how it was implemented",
-										 "Copy the text from your manuscript that describes the blind and how it was implemented",
-										 "Copy the text from your manuscript that describes the blind and how it was implemented",
-										 "Copy the text from your manuscript that describes the measures taken to examine whether participants and experimenters remained blind",
-										 "Copy the text from your manuscript that describes the standard-of-care intervention group",
-										 "Copy the text from your manuscript that describes the data collected on psychosocial factors",
-										 "Copy the text from your manuscript that identifies whether one or more strategy was provided. If one or more strategy was provided, include the text describing the strategy or strategies.",
-										 "Copy the text from your manuscript that describes the strategies participants used (note, these are not necessarily the same as the strategies provided)",
-										 "Copy the text from your manuscript that describes the methods used for online-data processing and artifact correction",
-										 "Copy the text from your manuscript that describes condition and/or group level artifacts",
-										 "Copy the text from your manuscript that describes how the online-feature extraction was defined",
-										 "Copy the text from your manuscript that describes and justifies the reinforcement schedule",
-										 "Copy the text from your manuscript that describes the feedback modality and content",
-										 "Copy the text from your manuscript that reports the brain activity variable(s) and/or contrasts used for feedback, as displayed to experimental participants",
-										 "Copy the text from your manuscript that describes the hardware and software used",
-										 "Copy the text from your manuscript that describes neurofeedback regulation success based on the feedback signal",
-										 "Copy the text from your manuscript and/or insert the figure number(s) that plot within-session and between-session regulation blocks of feedback variable(s), as well as pre-to-post resting baselines or contrasts",
-										 "Copy the text from your manuscript that describes the statistical comparison of the experimental condition/group to the control condition(s)/group(s)",
-										 "Copy the text from your manuscript that reports measures of clinical or behavioural significance and describes whether they were reached. Ensure this text includes the URL where the measure of clinical or behavioural significance was preregistered or enter the source where this clinical or behavioural significance value has been previously established",
-										 "Copy the text from your manuscript and/or the figure numbers that compare regulation success and behavioural outcomes",
-										 "Copy the text from your manuscript detailing which items are available. Ensure this text includes a link to access the documents"
+placeholders <- list("Please indicate what kind of instructions you provided during the recruitment phase.",
+										 "Please indicate what kind of instructions you provided at the very beginning of the NF/BCI training procedure.",
+										 "Please indicate what kind of instructions you provided at the beginning of each session.",
+										 "Please indicate what kind of instructions you provided during the sessions.",
+										 "Please indicate what kind of instructions you provided at the end of the training procedure.",
+										 NA,
+										 "Please indicate what kind of instructions you provided before or during this additional phase."
 )
 
 # Default Message If No is selected
-noboilers <- c("This experiment was not preregistered",
-							 "The manuscript does not describe the sampling plan or justify the sample size used",
-							 "This experiment did not include a control group or control condition",
-							 "NA: A double-blind was not appropriate for this experiment",
-							 "Those who rated the outcome were not blind to group assignment",
-							 "Those who analysed the data were not blind to group assignment",
-							 "No measures were taken to examine whether participants and experimenters remained blind",
-							 "NA: This is not a clinical efficacy study",
-							 "Psychosocial factors were not measured",
-							 "The manuscript does not report whether strategies were provided",
-							 "The strategies participants used were not recorded or not reported in the manuscript",
-							 "The manuscript does not report the methods used for online-data processing and artifact correction",
-							 "Condition and group effects for artifacts were not measured, or not reported in the manuscript",
-							 "The manuscript does not report how the online-feature extraction was defined",
-							 "The manuscript does not report or justify the reinforcement schedule",
-							 "The manuscript does not report the feedback modality and content",
-							 "All brain activity variable(s) and/or contrasts used for feedback, as displayed to experimental participants were not collected or are not reported in the manuscript",
-							 "The manuscript does not report the hardware and software used",
-							 "The manuscript does not report neurofeedback regulation success based on the feedback signal",
-							 "The manuscript does not plot within-session and between-session regulation blocks of feedback variable(s), as well as pre-to-post resting baselines or contrasts",
-							 "The manuscript does not statistically compare the experimental condition/group to the control condition(s)/group(s)",
-							 "The manuscript does not include measures of clinical or behavioural significance",
-							 "This manuscript does not compare regulation success and behavioural outcomes",
-							 "No additional documents related to the materials, analysis scripts, code, raw data, or final values are available for this manuscript"
-)
+noboilers <- c(NA,NA,NA,NA,NA,NA,NA)
 
 # Default Message If choice is'nt no but don't need test to justifiy. 
-naboilers <- c(NA, NA, 
-							 NA, "The experiment did not include a double-blind",
-							 "NA: There was only one participant group",
-							 "NA: There was only one participant group",
-							 "NA: There was only one participant group",
-							 "The present study is a clinical efficacy study. There was no standard-of-care intervention group",
-							 NA, NA, NA, NA, NA,
-							 NA, NA, NA, NA, NA,
-							 NA, NA, "NA: There was only one participant group",
-							 "NA:  the study does not take cognitive or behavioural measures",
-							 "NA:  the study does not take cognitive or behavioural measures",
-							 NA
-)
+naboilers <- c(NA,NA,NA,NA,NA, "Different instructions given during additional phase.",NA)
 
 # Message if a field need to be fill but nothing is define
 strblank <- "This field has been left blank"
@@ -160,14 +75,14 @@ if (length(sumIDs)!=ncheck) { stop("sumIDs not equal to length of ncheck") }
 
 ########################## START UI #############################
 ui <- fluidPage(
-	titlePanel("CRED-nf Checklist"),
+	titlePanel("NF/BCI Instructions Checklist"),
 	
-	navlistPanel(
-		"Domains",
+	navlistPanel("Domains",
+		
+		# About Tab
 		tabPanel("About",
-						 tags$div(HTML("<h1><u>C</u>onsensus on the <u>r</u>eporting and <u>e</u>xperimental <u>d</u>esign of clinical and cognitive-beharioural <u>n</u>euro<u>f</u>eedback studies (CRED-nf checklist)</h1>")),
-						 tags$div(p("This webpage serves as an online tool to standardize reporting of the", 
-						 					 a(href="https://psyarxiv.com/nyx84/", "CRED-nf checklist."), 
+						 tags$div(HTML("<h1><u>N</u>euro<u>F</u>eedback/<u>B</u>rain <u>C</u>omputer <u>I</u>nterface <u>I</u>nstruction Checklist</h1>")),
+						 tags$div(p("This webpage serves as an online tool to standardize reporting of the", a(href="https://psyarxiv.com/nyx84/", "CRED-nf checklist."), 
 						 					 "Please select the tabs on the left and answer the questions provided. When you respond ‘Yes’ to an item, you will be prompted to copy-paste the text from your manuscript that addresses the item. We recommend you also save this copy-pasted text in a text document in case this webpage has a timeout issue.", style = "font-size:15px")),
 						 br(),
 						 p("When completed, click the ‘Download summary’ button from the ‘Checklist summary’ tab. This will produce a table which you can include in your manuscript submission as supplementary material.", style = "font-size:15px"),
@@ -176,15 +91,19 @@ ui <- fluidPage(
 						 					 a(href="https://psyarxiv.com/nyx84/", "the associated manuscript here."), style = "font-size:15px")),
 						 br(),
 						 tags$div(p("This tool is currently a Beta version, and has been created by Hugo Pedder and Robert Thibault of the University of Bristol. The content is taken from the published version of the CRED-nf checklist. If you encounter any bugs when using it or have any feedback, please email robert.thibault@bristol.ac.uk with the subject `CRED-nf Shiny App` or raise an issue on",
-						 					 a(href="https://www.github.com/hugaped/CRED-nf", "GitHub"), style = "font-size:15px"))
+						 					 a(href="https://github.com/tmonseigne/CRED-nf", "GitHub"), style = "font-size:15px"))
 		),
+		
+		# Manuscript information Tab
 		tabPanel("Manuscript information",
 						 textInput("title", label="Manuscript title", width="80%"),
 						 textInput("author", label="Corresponding author name", width="80%"),
 						 textInput("email", label="Corresponding author email", width="80%")),
-		tabPanel("1. Pre-experiment",
-						 h2("Pre-Experiment"),
-						 lapply(1:2, function(i) {
+		
+		# Recruitment phase Tab
+		tabPanel(paste("1.", domains[1]),
+						 h2(domains[1]),
+						 lapply(1, function(i) {
 						 	wellPanel(
 						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
 						 		uiOutput(newIDs[i]),
@@ -193,9 +112,10 @@ ui <- fluidPage(
 						 })
 		),
 		
-		tabPanel("2. Control groups",
-						 h2("Control groups"),
-						 lapply(3:8, function(i) {
+		# Beginning of the first NF/BCI training session Tab		
+		tabPanel(paste("2.", domains[2]),
+						 h2(domains[2]),
+						 lapply(2, function(i) {
 						 	wellPanel(
 						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
 						 		uiOutput(newIDs[i]),
@@ -204,9 +124,10 @@ ui <- fluidPage(
 						 })
 		),
 		
-		tabPanel("3. Control measures",
-						 h2("Control measures"),
-						 lapply(9:13, function(i) {
+		# Beginning of each NF/BCI session Tab
+		tabPanel(paste("3.", domains[3]),
+						 h2(domains[3]),
+						 lapply(3, function(i) {
 						 	wellPanel(
 						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
 						 		uiOutput(newIDs[i]),
@@ -215,9 +136,10 @@ ui <- fluidPage(
 						 })
 		),
 		
-		tabPanel("4. Feedback specifications",
-						 h2("Feedback specifications"),
-						 lapply(14:18, function(i) {
+		# During NF/BCI sessions Tab
+		tabPanel(paste("4.", domains[4]),
+						 h2(domains[4]),
+						 lapply(4, function(i) {
 						 	wellPanel(
 						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
 						 		uiOutput(newIDs[i]),
@@ -226,9 +148,10 @@ ui <- fluidPage(
 						 })
 		),
 		
-		tabPanel("5. Outcome measures - Brain",
-						 h2("Outcome measures - Brain"),
-						 lapply(19:21, function(i) {
+		# End of the last NF/BCI session Tab
+		tabPanel(paste("5.", domains[5]),
+						 h2(domains[5]),
+						 lapply(5, function(i) {
 						 	wellPanel(
 						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
 						 		uiOutput(newIDs[i]),
@@ -236,9 +159,11 @@ ui <- fluidPage(
 						 	)
 						 })
 		),
-		tabPanel("6. Outcome measures - Behaviour",
-						 h2("Outcome measures - Behaviour"),
-						 lapply(22:23, function(i) {
+		
+		# Additional phase Tab
+		tabPanel(paste("6.", domains[6]),
+						 h2(domains[6]),
+						 lapply(6:7, function(i) {
 						 	wellPanel(
 						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
 						 		uiOutput(newIDs[i]),
@@ -246,47 +171,30 @@ ui <- fluidPage(
 						 	)
 						 })
 		),
-		tabPanel("7. Data storage",
-						 h2("Data storage"),
-						 lapply(24, function(i) {
-						 	wellPanel(
-						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
-						 		uiOutput(newIDs[i]),
-						 		textOutput(textIDs[i])
-						 	)
-						 })
-		),
+		
+		# Checklist Tab
 		tabPanel("Checklist summary", 
 						 tags$span(style="color:red", strong(em(textOutput("warningtext")))),
 						 h2("CRED-nf checklist summary output"),
 						 tags$div(
 						 	tags$ol(
-						 		tags$li("Pre-experiment"),
-						 		tags$ol(lapply(1:2, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
+						 		tags$li(domains[1]),
+						 		tags$ol(lapply(1, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
 						 		
-						 		tags$li("Control groups"),
-						 		tags$ol(
-						 			lapply(3:4, function(i) { tags$li(textOutput(summaryIDs[i])) }),
-						 			tags$li("Blinding of those who rate the outcome and those who analyse the data:",
-						 							tags$ul(tags$li(textOutput(summaryIDs[5])), tags$li(textOutput(summaryIDs[6])))
-						 			),
-						 			lapply(7:8, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"
-						 		),
+						 		tags$li(domains[2]),
+						 		tags$ol(lapply(2, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
 						 		
-						 		tags$li("Control measures"),
-						 		tags$ol(lapply(9:13, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
+						 		tags$li(domains[3]),
+						 		tags$ol(lapply(3, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
 						 		
-						 		tags$li("Feedback specifications"),
-						 		tags$ol(lapply(14:18, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
+						 		tags$li(domains[4]),
+						 		tags$ol(lapply(4, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
 						 		
-						 		tags$li("Outcome measures - Brain"),
-						 		tags$ol(lapply(19:21, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
+						 		tags$li(domains[5]),
+						 		tags$ol(lapply(5, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
 						 		
-						 		tags$li("Outcome measures - Behaviour"),
-						 		tags$ol(lapply(22:23, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a"),
-						 		
-						 		tags$li("Data storage"),
-						 		tags$ol(lapply(24, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a")
+						 		tags$li(domains[6]),
+						 		tags$ol(lapply(6:7, function(i) { tags$li(textOutput(summaryIDs[i])) }), type="a")
 						 	)
 						 ),
 						 
@@ -416,13 +324,12 @@ server <- function(input, output, session) {
 			
 			# Set up parameters to pass to Rmd document
 			params <- list("title"=title(), "author"=author(), "email"=email(),
-										 "domain1"=c(sum1a(), sum1b()),
-										 "domain2"=c(sum2a(), sum2b(), sum2c.rater(), sum2c.stat(), sum2d(), sum2e()),
-										 "domain3"=c(sum3a(), sum3b(), sum3c(), sum3d(), sum3e()),
-										 "domain4"=c(sum4a(), sum4b(), sum4c(), sum4d(), sum4e()),
-										 "domain5"=c(sum5a(), sum5b(), sum5c()),
+										 "domain1"=c(sum1a()),
+										 "domain2"=c(sum2a()),
+										 "domain3"=c(sum3a()),
+										 "domain4"=c(sum4a()),
+										 "domain5"=c(sum5a()),
 										 "domain6"=c(sum6a(), sum6b()),
-										 "domain7"=c(sum7a()),
 										 "boilers"=c(noboilers, naboilers, strblank)
 			)
 			
