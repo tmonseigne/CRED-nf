@@ -17,6 +17,11 @@ textIDs <- paste0("text", checkIDs)				# Generate textIDs
 summaryIDs <- paste0("summary", checkIDs)	# Generate summaryIDs
 sumIDs <- paste0("sum", checkIDs)
 responseIDs <- paste0("response", checkIDs)
+tickIDs <- paste0("tick", checkIDs)	# Generate inputIDs
+
+
+# Lisdt of possible choice in formular
+ticklist <- c("Avoiding EEG artefacts", "Environment and feedback", "Mental strategies", "User motivation", "Transfer tasks", "Trainers' behaviour", "Ethics", "Other" )
 
 # Lisdt of possible choice in formular
 choicelist <- list(c("No", "Yes"), c("No", "Partially", "Yes"))
@@ -51,14 +56,14 @@ placeholders <- list("Please indicate what kind of instructions you provided dur
 										 "Please indicate what kind of instructions you provided before or during this additional phase."
 )
 
-# Default Message If No is selected
-noboilers <- c(NA,NA,NA,NA,NA,NA,NA)
-
 # Default Message If choice is'nt no but don't need test to justifiy. 
 naboilers <- c(NA,NA,NA,NA,NA, "Different instructions given during additional phase.",NA)
 
 # Message if a field need to be fill but nothing is define
 strblank <- "This field has been left blank"
+
+# Message if No is selected
+strNo <- "No instructions provided"
 
 # Run checks on vector lengths
 if (length(checkIDs)!=ncheck) { stop("checkIDs not equal to length of ncheck") }
@@ -71,7 +76,17 @@ if (length(naboilers)!=ncheck) { stop("naboilers not equal to length of ncheck")
 if (length(summaryIDs)!=ncheck) { stop("summaryIDs not equal to length of ncheck") }
 if (length(sumIDs)!=ncheck) { stop("sumIDs not equal to length of ncheck") }
 
+simpleItem <- function(i){
+	wellPanel(selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL), uiOutput(newIDs[i]), textOutput(textIDs[i]))
+}
 
+itemWithSubItem <- function(i,j){
+	c(simpleItem(i), simpleItem(j))
+}
+
+checkboxes <- function(i){
+	wellPanel(checkboxGroupInput(tickIDs[i], "What was(were) the type(s) of this(these) instruction(s)? (check all that apply)", choices = ticklist))
+}
 
 ########################## START UI #############################
 ui <- fluidPage(
@@ -101,76 +116,22 @@ ui <- fluidPage(
 						 textInput("email", label="Corresponding author email", width="80%")),
 		
 		# Recruitment phase Tab
-		tabPanel(paste("1.", domains[1]),
-						 h2(domains[1]),
-						 lapply(1, function(i) {
-						 	wellPanel(
-						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
-						 		uiOutput(newIDs[i]),
-						 		textOutput(textIDs[i])
-						 	)
-						 })
-		),
+		tabPanel(paste("1.", domains[1]), h2(domains[1]), simpleItem(1), checkboxes(1)), 
 		
 		# Beginning of the first NF/BCI training session Tab		
-		tabPanel(paste("2.", domains[2]),
-						 h2(domains[2]),
-						 lapply(2, function(i) {
-						 	wellPanel(
-						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
-						 		uiOutput(newIDs[i]),
-						 		textOutput(textIDs[i])
-						 	)
-						 })
-		),
+		tabPanel(paste("2.", domains[2]), h2(domains[2]), simpleItem(2)), 
 		
 		# Beginning of each NF/BCI session Tab
-		tabPanel(paste("3.", domains[3]),
-						 h2(domains[3]),
-						 lapply(3, function(i) {
-						 	wellPanel(
-						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
-						 		uiOutput(newIDs[i]),
-						 		textOutput(textIDs[i])
-						 	)
-						 })
-		),
+		tabPanel(paste("3.", domains[3]), h2(domains[3]), simpleItem(3)), 
 		
 		# During NF/BCI sessions Tab
-		tabPanel(paste("4.", domains[4]),
-						 h2(domains[4]),
-						 lapply(4, function(i) {
-						 	wellPanel(
-						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
-						 		uiOutput(newIDs[i]),
-						 		textOutput(textIDs[i])
-						 	)
-						 })
-		),
+		tabPanel(paste("4.", domains[4]), h2(domains[4]), simpleItem(4)), 
 		
 		# End of the last NF/BCI session Tab
-		tabPanel(paste("5.", domains[5]),
-						 h2(domains[5]),
-						 lapply(5, function(i) {
-						 	wellPanel(
-						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
-						 		uiOutput(newIDs[i]),
-						 		textOutput(textIDs[i])
-						 	)
-						 })
-		),
+		tabPanel(paste("5.", domains[5]), h2(domains[5]), simpleItem(5)), 
 		
 		# Additional phase Tab
-		tabPanel(paste("6.", domains[6]),
-						 h2(domains[6]),
-						 lapply(6:7, function(i) {
-						 	wellPanel(
-						 		selectInput(inputIDs[i], h4(), choices = as.list(choicelist[[choicecode[i]]]), selected = NULL),
-						 		uiOutput(newIDs[i]),
-						 		textOutput(textIDs[i])
-						 	)
-						 })
-		),
+		tabPanel(paste("6.", domains[6]), h2(domains[6]), itemWithSubItem(6,7)), 
 		
 		# Checklist Tab
 		tabPanel("Checklist summary", 
@@ -237,11 +198,11 @@ server <- function(input, output, session) {
 																			 "Yes, and a standard-of-care intervention group was used as a benchmark for improvement",
 																			 "Partially")) {
 				return(NULL)
-			} else { textAreaInput(responseIDs[i], label=NULL, placeholder=placeholders[[i]]) }
+			} else { 
+				textAreaInput(responseIDs[i], label=NULL, placeholder=placeholders[[i]])
+				}
 		})
 	})
-	
-	
 	
 	########### Return text ############
 	
@@ -260,32 +221,9 @@ server <- function(input, output, session) {
 	lapply(1:ncheck, function(i) {
 		assign(sumIDs[i],
 					 reactive({
-					 	
-					 	if (input[[inputIDs[i]]] %in% c("Yes", 
-					 																	"Yes, and the measure was defined a priori",
-					 																	"Yes, and a double-blind was used",
-					 																	"Yes, and a standard-of-care intervention group was used as a benchmark for improvement",
-					 																	"Partially")) {
-					 		if (input[[responseIDs[i]]]=="") { return(strblank) 
-					 		} else { return(input[[responseIDs[i]]]) }
-					 	} else if (input[[inputIDs[i]]] == "No") { return(noboilers[i])
-					 	} else if (input[[inputIDs[i]]] %in% c("Not applicable",
-					 																				 "Not applicable, the study does not take cognitive or behavioural measures",
-					 																				 "Not applicable, there was only one participant group")) {
-					 		return(naboilers[i])
-					 	} else if (input[[inputIDs[i]]] == "Yes, and the measure was not defined a priori") {
-					 		temp <- input[[responseIDs[i]]]
-					 		
-					 		if (temp=="") { temp <- strblank }
-					 		
-					 		# Remove leading/trailing whitespace and add period if not at end
-					 		temp <- trimws(temp)
-					 		if (!grepl(".+\\.$", temp)) { temp <- paste0(temp, ".") }
-					 		return(paste(temp, "This clinical or behavioural significance value was not defined a priori.", sep=" "))
-					 	} else if (input[[inputIDs[i]]] %in% c("Yes, but a double-blind was not used",
-					 																				 "Yes, and a standard-of-care intervention group was not used as a benchmark for improvement")) {
-					 		return(naboilers[i])
-					 	}
+					 	if(i == 6 && input[[inputIDs[i]]] == "Yes") { return(naboilers[i]) }
+					 	if (input[[inputIDs[i]]] == "Yes") { if (input[[responseIDs[i]]]=="") { return(strblank) } else { return(input[[responseIDs[i]]]) } }
+					 	return(strNo)
 					 }),
 					 envir=globalenv()
 		)
@@ -330,7 +268,7 @@ server <- function(input, output, session) {
 										 "domain4"=c(sum4a()),
 										 "domain5"=c(sum5a()),
 										 "domain6"=c(sum6a(), sum6b()),
-										 "boilers"=c(noboilers, naboilers, strblank)
+										 "boilers"=c(naboilers, strblank, strNo)
 			)
 			
 			# Knit the document using params

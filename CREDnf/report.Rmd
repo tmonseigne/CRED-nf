@@ -91,37 +91,21 @@ boilmatch <- as.logical(sapply(escboil, function(x) {any(grepl(x, params$boilers
 hdr <- c("Item No.", "Checklist item", "Manuscript Details")
 
 table.df %>%
-  mutate(
-    Manuscript.details = cell_spec(Manuscript.details, italic=boilmatch)
-  ) %>%
+  mutate(Manuscript.details = cell_spec(Manuscript.details, italic=boilmatch)) %>%
   select(Item.num, Checklist.item, Manuscript.details) %>%
-  kable(table.df, format="latex", longtable=TRUE, escape=FALSE,
-        col.names=hdr) %>%
+  kable(table.df, format="latex", longtable=TRUE, escape=FALSE, col.names=hdr) %>%
   kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
   row_spec(0, bold=TRUE, font_size = 12) %>%
   column_spec(1, border_right=TRUE) %>%
   column_spec(2, border_right=TRUE, width="20em") %>%
-  column_spec(3, width="40em") %>%
-  pack_rows("Recruitment phase", hline_after = TRUE, 1) %>%
-  pack_rows("Beginning of the first NF/BCI training session", 2, hline_after = TRUE) %>%
-  pack_rows("Beginning of each NF/BCI session", 3, hline_before = TRUE) %>%
-  pack_rows("During NF/BCI sessions", 4) %>%
-  pack_rows("End of the last NF/BCI session", 5) %>%
-  pack_rows("Additional phase", 6)
+  column_spec(3, width="40em")
+# %>%
+# GRRRRRRRRRRRRRRRRRRRR
+#  pack_rows("Recruitment phase", hline_after = TRUE, 1) %>%
+#  pack_rows("Beginning of the first NF/BCI training session", 2, hline_after = TRUE) %>%
+#  pack_rows("Beginning of each NF/BCI session", 3, hline_before = TRUE) %>%
+#  pack_rows("During NF/BCI sessions", 4) %>%
+#  pack_rows("End of the last NF/BCI session", 5) %>%
+#  pack_rows("Additional phase", 6)
 
-
-# kable(table.df, longtable=TRUE,
-#       col.names=c("Item #", "Checklist item", "Manuscript Details")) %>%
-#   kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
-#   row_spec(0, bold=TRUE, font_size = 12) %>%
-#   column_spec(1, border_right=TRUE) %>%
-#   column_spec(2, border_right=TRUE, width="20em") %>%
-#   column_spec(3, width="40em") %>%
-#   pack_rows("Pre-experiment", hline_after = TRUE, 1, 2) %>%
-#   pack_rows("Control groups", 3, 8, hline_after = TRUE) %>%
-#   pack_rows("Control measures", 9, 13, hline_before = TRUE) %>%
-#   pack_rows("Feedback specifications", 14, 18) %>%
-#   pack_rows("Outcome measures - brain", 19, 21) %>%
-#   pack_rows("Outcome measures - behaviour", 22, 23) %>%
-#   pack_rows("Data storage", 24, 24)
 ```
