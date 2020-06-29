@@ -24,7 +24,6 @@ params:
   domain4: NA
   domain5: NA
   domain6: NA
-  domain7: NA
   boilers: NA
 ---
 
