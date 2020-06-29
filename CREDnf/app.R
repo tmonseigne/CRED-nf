@@ -44,7 +44,7 @@ labels <- c("Did you provide any instructions during the recruitment phase?",
 						"Did you provide any instructions during the NF/BCI training sessions?",
 						"Did you provide any instructions at the end of the NF/BCI training procedure (end of the last session)?",
 						"Did your experiment include an additional phase (e.g., transfer phase, at-home training, without NF) during which different instructions were given?",
-						"Did you provide any instructions before or during this additional phase?")
+						"If Yes, Did you provide any instructions before or during this additional phase?")
 
 # Default message (in grey) in the text area when ye is selected
 placeholders <- list("Please indicate what kind of instructions you provided during the recruitment phase.",
@@ -58,6 +58,9 @@ placeholders <- list("Please indicate what kind of instructions you provided dur
 
 # Default Message If choice is'nt no but don't need test to justifiy. 
 naboilers <- c(NA,NA,NA,NA,NA, "Different instructions given during additional phase.",NA)
+
+# Default Message If  choice is no but the classical no str can't be used 
+noboilers <- c(NA,NA,NA,NA,NA, "No Additionnal phases.", "No Additionnal phases.")
 
 # Message if a field need to be fill but nothing is define
 strblank <- "This field has been left blank"
@@ -85,7 +88,7 @@ itemWithSubItem <- function(i,j){
 }
 
 checkboxes <- function(i){
-	wellPanel(checkboxGroupInput(tickIDs[i], "What was(were) the type(s) of this(these) instruction(s)? (check all that apply)", choices = ticklist))
+	conditionalPanel(condition = "input.inputIDs[i] == 'Yes'", checkboxGroupInput(tickIDs[i], "What was(were) the type(s) of this(these) instruction(s)? (check all that apply)", choices = ticklist))
 }
 
 ########################## START UI #############################
@@ -116,22 +119,22 @@ ui <- fluidPage(
 						 textInput("email", label="Corresponding author email", width="80%")),
 		
 		# Recruitment phase Tab
-		tabPanel(paste("1.", domains[1]), h2(domains[1]), simpleItem(1), checkboxes(1)), 
+		tabPanel(paste("1.", domains[1]), h2(domains[1]), simpleItem(1)),
 		
 		# Beginning of the first NF/BCI training session Tab		
-		tabPanel(paste("2.", domains[2]), h2(domains[2]), simpleItem(2)), 
+		tabPanel(paste("2.", domains[2]), h2(domains[2]), simpleItem(2)),
 		
 		# Beginning of each NF/BCI session Tab
-		tabPanel(paste("3.", domains[3]), h2(domains[3]), simpleItem(3)), 
+		tabPanel(paste("3.", domains[3]), h2(domains[3]), simpleItem(3)),
 		
 		# During NF/BCI sessions Tab
-		tabPanel(paste("4.", domains[4]), h2(domains[4]), simpleItem(4)), 
+		tabPanel(paste("4.", domains[4]), h2(domains[4]), simpleItem(4)),
 		
 		# End of the last NF/BCI session Tab
-		tabPanel(paste("5.", domains[5]), h2(domains[5]), simpleItem(5)), 
+		tabPanel(paste("5.", domains[5]), h2(domains[5]), simpleItem(5)),
 		
 		# Additional phase Tab
-		tabPanel(paste("6.", domains[6]), h2(domains[6]), itemWithSubItem(6,7)), 
+		tabPanel(paste("6.", domains[6]), h2(domains[6]), simpleItem(6), simpleItem(7)), 
 		
 		# Checklist Tab
 		tabPanel("Checklist summary", 
@@ -191,16 +194,11 @@ server <- function(input, output, session) {
 	
 	lapply(1:ncheck, function(i) {
 		output[[newIDs[i]]] <- renderUI({
-			if (!input[[inputIDs[i]]] %in% c("Yes", 
-																			 "Yes, and the measure was defined a priori", 
-																			 "Yes, and the measure was not defined a priori", 
-																			 "Yes, and a double-blind was used", 
-																			 "Yes, and a standard-of-care intervention group was used as a benchmark for improvement",
-																			 "Partially")) {
-				return(NULL)
-			} else { 
-				textAreaInput(responseIDs[i], label=NULL, placeholder=placeholders[[i]])
-				}
+			if (input[[inputIDs[i]]] == "No") { return(NULL) } 
+			else if (i != 6) { 
+				list(textAreaInput(responseIDs[i], label=NULL, placeholder=placeholders[[i]]),
+				checkboxes(i))
+			}
 		})
 	})
 	
@@ -208,9 +206,7 @@ server <- function(input, output, session) {
 	
 	lapply(1:ncheck, function(i) {
 		output[[paste0("text", checkIDs[i])]] <- renderText({
-			if (input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
-				return(input[[responseIDs[i]]])
-			}
+			if (input[[inputIDs[i]]] == "Yes") { return(input[[responseIDs[i]]]) }
 		})
 	})
 	
@@ -221,7 +217,9 @@ server <- function(input, output, session) {
 	lapply(1:ncheck, function(i) {
 		assign(sumIDs[i],
 					 reactive({
-					 	if(i == 6 && input[[inputIDs[i]]] == "Yes") { return(naboilers[i]) }
+					 	if(i == 6 && input[[inputIDs[i]]] == "Yes") { return(naboilers[i]) }	# If Yes at Item 6
+					 	if(i == 6 && input[[inputIDs[i]]] == "No") { return(noboilers[i]) }	# If No at Item 6
+					 	if(i == 7 && input[[inputIDs[6]]] == "No") { return(noboilers[i]) }	# If No at Item 6 and we are at item 7
 					 	if (input[[inputIDs[i]]] == "Yes") { if (input[[responseIDs[i]]]=="") { return(strblank) } else { return(input[[responseIDs[i]]]) } }
 					 	return(strNo)
 					 }),
@@ -239,14 +237,13 @@ server <- function(input, output, session) {
 		blankindex <- vector()
 		
 		for (i in 1:ncheck) {
-			if (input[[inputIDs[i]]] %in% c("Yes", "Yes, and the measure was defined a priori", "Yes, and the measure was not defined a priori")) {
-				if (input[[responseIDs[i]]]=="") { blankindex <- append(blankindex, i) }
+			if (input[[inputIDs[i]]] == "Yes") {
+				if (input[[responseIDs[i]]] == "") { blankindex <- append(blankindex, i) }
 			}
 		}
 		
-		if (length(blankindex)>0) {
-			return(paste0("Warning: Checklist item(s) ", paste(checkIDs[blankindex], collapse=", "), " have been left blank."))
-		} else {return(NULL)}
+		if (length(blankindex)>0) { return(paste0("Warning: Checklist item(s) ", paste(checkIDs[blankindex], collapse=", "), " have been left blank.")) } 
+		return(NULL)
 	})
 	output$warningtext <- renderText(warningtext())
 	
@@ -268,7 +265,7 @@ server <- function(input, output, session) {
 										 "domain4"=c(sum4a()),
 										 "domain5"=c(sum5a()),
 										 "domain6"=c(sum6a(), sum6b()),
-										 "boilers"=c(naboilers, strblank, strNo)
+										 "boilers"=c(naboilers, noboilers, strblank, strNo)
 			)
 			
 			# Knit the document using params
