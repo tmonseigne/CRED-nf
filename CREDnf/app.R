@@ -17,14 +17,14 @@ textIDs <- paste0("text", checkIDs)				# Generate textIDs
 summaryIDs <- paste0("summary", checkIDs)	# Generate summaryIDs
 sumIDs <- paste0("sum", checkIDs)
 responseIDs <- paste0("response", checkIDs)
-tickIDs <- paste0("tick", checkIDs)	# Generate inputIDs
+tickIDs <- paste0("tick", checkIDs)				# Generate tickIDs
 
 
 # Lisdt of possible choice in formular
 ticklist <- c("Avoiding EEG artefacts", "Environment and feedback", "Mental strategies", "User motivation", "Transfer tasks", "Trainers' behaviour", "Ethics", "Other" )
 
 # Lisdt of possible choice in formular
-choicelist <- list(c("No", "Yes"), c("No", "Partially", "Yes"))
+choicelist <- list(c("No", "Yes"))
 
 # An index of choices and vector of pre-existing choices see choiceList
 choicecode <- c(1,1,1,1,1,1,1)
@@ -177,8 +177,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 	
 	############ Observe inputs to react to selections made by user ############
-	
-	observe({
+		observe({
 		for (i in 1:ncheck) {
 			updateSelectInput(session, inputId = inputIDs[i], label = labels[i], choices = choicelist[[choicecode[i]]])
 		}
@@ -190,8 +189,7 @@ server <- function(input, output, session) {
 	assign("email", renderText({input$email}))
 	
 	
-	############ Add open end box to enter text if they user has selected "yes" ############
-	
+	############ Add element if "Yes" is selected ############
 	lapply(1:ncheck, function(i) {
 		output[[newIDs[i]]] <- renderUI({
 			if (input[[inputIDs[i]]] == "No") { return(NULL) } 
@@ -213,18 +211,17 @@ server <- function(input, output, session) {
 	
 	############# Generate report summary #############
 	
+	getResponse <- function(i){
+		if(i == 6 && input[[inputIDs[i]]] == "Yes") { return(naboilers[i]) }	# If Yes at Item 6
+		if(i == 6 && input[[inputIDs[i]]] == "No") { return(noboilers[i]) }	# If No at Item 6
+		if(i == 7 && input[[inputIDs[6]]] == "No") { return(noboilers[i]) }	# If No at Item 6 and we are at item 7
+		if (input[[inputIDs[i]]] == "Yes") { if (input[[responseIDs[i]]]=="") { return(strblank) } else { return(input[[responseIDs[i]]]) } }
+		return(strNo)
+	}
+	
 	params <- list()
 	lapply(1:ncheck, function(i) {
-		assign(sumIDs[i],
-					 reactive({
-					 	if(i == 6 && input[[inputIDs[i]]] == "Yes") { return(naboilers[i]) }	# If Yes at Item 6
-					 	if(i == 6 && input[[inputIDs[i]]] == "No") { return(noboilers[i]) }	# If No at Item 6
-					 	if(i == 7 && input[[inputIDs[6]]] == "No") { return(noboilers[i]) }	# If No at Item 6 and we are at item 7
-					 	if (input[[inputIDs[i]]] == "Yes") { if (input[[responseIDs[i]]]=="") { return(strblank) } else { return(input[[responseIDs[i]]]) } }
-					 	return(strNo)
-					 }),
-					 envir=globalenv()
-		)
+		assign(sumIDs[i], reactive({return(getResponse(i))}), envir=globalenv())
 		
 		output[[summaryIDs[i]]] <- renderText({eval(parse(text=paste0(sumIDs[i], "()")))})
 		
@@ -258,14 +255,10 @@ server <- function(input, output, session) {
 			file.copy("report.Rmd", tempReport, overwrite = TRUE)
 			
 			# Set up parameters to pass to Rmd document
-			params <- list("title"=title(), "author"=author(), "email"=email(),
-										 "domain1"=c(sum1a()),
-										 "domain2"=c(sum2a()),
-										 "domain3"=c(sum3a()),
-										 "domain4"=c(sum4a()),
-										 "domain5"=c(sum5a()),
-										 "domain6"=c(sum6a(), sum6b()),
-										 "boilers"=c(naboilers, noboilers, strblank, strNo)
+			params <- list("title" = title(), "author" = author(), "email" = email(),
+										 "domain1" = c(sum1a()), "domain2" = c(sum2a()), "domain3" = c(sum3a()),
+										 "domain4" = c(sum4a()), "domain5" = c(sum5a()), "domain6" = c(sum6a(), sum6b()),
+										 "boilers" = c(naboilers, noboilers, strblank, strNo)
 			)
 			
 			# Knit the document using params

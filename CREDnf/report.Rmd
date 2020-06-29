@@ -83,6 +83,12 @@ boilmatch <- as.logical(sapply(escboil, function(x) {any(grepl(x, params$boilers
 **Corresponding author email:** `r params$email`  
 &nbsp;
 
+**domain1:** `r params$domain1`  
+**domain2:** `r params$domain2`  
+**domain3:** `r params$domain3`  
+**domain4:** `r params$domain4`  
+**domain5:** `r params$domain5`  
+**domain6:** `r params$domain6`  
 
 
 
