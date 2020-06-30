@@ -40,8 +40,7 @@ choicelist <- list(c("No", "Yes"))
 choicecode <- c(1, 1, 1, 1, 1, 1, 1)
 
 # Domains
-domains <- c(
-	"Recruitment phase",
+domains <- c("Recruitment phase",
 	"Beginning of the first NF/BCI training session",
 	"Beginning of each NF/BCI session",
 	"During NF/BCI sessions",
@@ -50,8 +49,7 @@ domains <- c(
 )
 
 # Questions
-labels <- c(
-	"Did you provide any instructions during the recruitment phase?",
+labels <- c("Did you provide any instructions during the recruitment phase?",
 	"Did you provide any instructions at the very beginning of the NF/BCI training procedure (first session)?",
 	"Did you provide any instructions at the beginning of each session of the NF/BCI training procedure?",
 	"Did you provide any instructions during the NF/BCI training sessions?",
@@ -61,8 +59,7 @@ labels <- c(
 )
 
 # Default message (in grey) in the text area when ye is selected
-placeholders <- list(
-	"Please indicate what kind of instructions you provided during the recruitment phase.",
+placeholders <- list("Please indicate what kind of instructions you provided during the recruitment phase.",
 	"Please indicate what kind of instructions you provided at the very beginning of the NF/BCI training procedure.",
 	"Please indicate what kind of instructions you provided at the beginning of each session.",
 	"Please indicate what kind of instructions you provided during the sessions.",
@@ -70,6 +67,14 @@ placeholders <- list(
 	NA,
 	"Please indicate what kind of instructions you provided before or during this additional phase."
 )
+
+checkItem <- c("Instructions during the recruitment phase.",
+							 "Instructions at the very beginning of the NF/BCI training procedure (first session).",
+							 "Instructions at the beginning of each session of the NF/BCI training procedure.",
+							 "Instructions during the NF/BCI training sessions.",
+							 "Instructions at the end of the NF/BCI training procedure (end of the last session).",
+							 "Additional phase (e.g., transfer phase, at-home training, without NF) with different instructions.",
+							 "Instructions before or during this additional phase.")
 
 # Default Message If choice is'nt no but don't need test to justifiy.
 naboilers <- c(NA, NA, NA, NA, NA, "Different instructions given during additional phase.", NA)
@@ -82,6 +87,9 @@ strblank <- "This field has been left blank"
 
 # Message if No is selected
 strNo <- "No instructions provided"
+
+# Message if No type is selected
+strNoType <- "No instruction type provided"
 
 # Run checks on vector lengths
 if (length(checkIDs) != ncheck) { 		stop("checkIDs not equal to length of ncheck") }
@@ -201,7 +209,7 @@ server <- function(input, output, session) {
 	getTicks <- function(i) {
 		if ((i == 6) || (i == 7 && input[[inputIDs[6]]] == "No")) { return("") }
 		if(input[[inputIDs[i]]] == "Yes") { return(input[[tickIDs[i]]]) }
-		return("")
+		return(strNoType)
 	}
 	
 	getSum <- function(i) {
@@ -245,9 +253,10 @@ server <- function(input, output, session) {
 			
 			# Set up parameters to pass to Rmd document
 			params <- list("title" = title(), "author" = author(), "email" = email(),
-										 "domain1" = c(sumT1a(), sumR1a()), "domain2" = c(sumT2a(), sumR2a()), "domain3" = c(sumT3a(), sumR3a()),
-										 "domain4" = c(sumT4a(), sumR4a()), "domain5" = c(sumT5a(), sumR5a()), "domain6" = c(sumT6a(), sumR6a(), sumT6b(), sumR6b()),
-										 "boilers" = c(naboilers, noboilers, strblank, strNo)
+										 "checkIDs" = checkIDs, "checkItem" = checkItem, "domains" = domains,
+										 "response" = c(sumR1a(), sumR2a(), sumR3a(), sumR4a(), sumR5a(), sumR6a(), sumR6b()),
+										 "ticks" = c(sumT1a(), sumT2a(), sumT3a(), sumT4a(), sumT5a(), sumT6a(), sumT6b()),
+										 "boilers" = c(naboilers, noboilers, strblank, strNo, strNoType)
 				)
 			
 			# Knit the document using params

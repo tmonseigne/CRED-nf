@@ -18,12 +18,11 @@ params:
   title: NA
   author: NA
   email: NA
-  domain1: NA
-  domain2: NA
-  domain3: NA
-  domain4: NA
-  domain5: NA
-  domain6: NA
+  domains: NA
+  checkIDs: NA
+  checkItem: NA
+  response: NA
+  ticks: NA
   boilers: NA
 ---
 
@@ -48,30 +47,13 @@ escapestr <- function(x) {
 ```
 
 ```{r, echo=FALSE}
-ndom <- 6
-
-details <- vector()
-for (i in 1:ndom) {
-  details <- append(details, params[[paste0("domain",i)]])
-}
-
-checkIDs <- c("1a", "2a", "3a", "4a", "5a", "6a", "6b")
-
-checkitem <- c("Instructions during the recruitment phase.",
-						"Instructions at the very beginning of the NF/BCI training procedure (first session).",
-						"Instructions at the beginning of each session of the NF/BCI training procedure.",
-						"Instructions during the NF/BCI training sessions.",
-						"Instructions at the end of the NF/BCI training procedure (end of the last session).",
-						"Additional phase (e.g., transfer phase, at-home training, without NF) with different instructions.",
-						"Instructions before or during this additional phase.")
-
-table.df <- data.frame("Item.num"=checkIDs, "Checklist item"=checkitem, "Manuscript details"=details)
+table.df <- data.frame("Item.num" = params$checkIDs, "Checklist item" = params$checkItem, "Instructions type" = params$ticks, "Manuscript details"=params$response) # Create a table
 
 ```
 
 
 ```{r}
-escboil <- escapestr(details)
+escboil <- escapestr(params$response)
 # Check for matches with boilerplate
 boilmatch <- as.logical(sapply(escboil, function(x) {any(grepl(x, params$boilers))}))
 ```
@@ -82,28 +64,28 @@ boilmatch <- as.logical(sapply(escboil, function(x) {any(grepl(x, params$boilers
 **Corresponding author email:** `r params$email`  
 &nbsp;
 
-**domain1:** `r params$domain1`  
-**domain2:** `r params$domain2`  
-**domain3:** `r params$domain3`  
-**domain4:** `r params$domain4`  
-**domain5:** `r params$domain5`  
-**domain6:** `r params$domain6`  
+**domains:** `r params$domains`  
+**checkIDs:** `r params$checkIDs`  
+**checkItem:** `r params$checkItem`  
+**ticks:** `r params$ticks`  
+**response:** `r params$response`  
 
 
 
 \renewcommand{\arraystretch}{1.5}
 ```{r}
-hdr <- c("Item No.", "Checklist item", "Manuscript Details")
+hdr <- c("Item No.", "Checklist item", "Instructions type", "Manuscript Details")
 
 table.df %>%
   mutate(Manuscript.details = cell_spec(Manuscript.details, italic=boilmatch)) %>%
-  select(Item.num, Checklist.item, Manuscript.details) %>%
+  select(Item.num, Checklist.item, Instructions.type, Manuscript.details) %>%
   kable(table.df, format="latex", longtable=TRUE, escape=FALSE, col.names=hdr) %>%
   kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
   row_spec(0, bold=TRUE, font_size = 12) %>%
   column_spec(1, border_right=TRUE) %>%
   column_spec(2, border_right=TRUE, width="20em") %>%
-  column_spec(3, width="40em")
+  column_spec(3, width="10em") %>%
+  column_spec(4, width="30em")
 # %>%
 # GRRRRRRRRRRRRRRRRRRRR
 #  pack_rows("Recruitment phase", hline_after = TRUE, 1) %>%
