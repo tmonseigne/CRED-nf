@@ -107,21 +107,25 @@ checkboxes <- function(i) { checkboxGroupInput(tickIDs[i], "What was(were) the t
 
 ########################## START UI #############################
 ui <- fluidPage(
-	titlePanel("NF/BCI Instructions Checklist"),
+	titlePanel("RETINA"),
 	
 	navlistPanel("Domains",
 				 
 				 # About Tab
 				 tabPanel("About",
-				 		 tags$div(HTML("<h1><u>N</u>euro<u>F</u>eedback/<u>B</u>rain <u>C</u>omputer <u>I</u>nterface <u>I</u>nstruction Checklist</h1>")),
-				 		 tags$div(p("Instructions and guidance can have a substantial impact on learning, but little is known regarding the current practice and the reasoning behind specific instructions in the context of neurofeedback (NF) and brain-computer interfaces (BCI). We thus proposed a framework intended to enable both literature-based decision making for an optimal learning environment in NF/BCI and systematic research on the influence of instructions. The current online app is a digital version of the framework, to be filled-in by NF/BCI scientists in order to support the scientific community and to encourage rigorous design and reporting of instructions. ", style = "font-size:15px")),
+				 		 tags$div(HTML("<h1><u>RE</u>por<u>T</u>ing <u>I</u>nstructions for <u>N</u>eurofeedb<u>A</u>ck</h1>")),
+				 		 tags$div(p("Instructions and guidance can have a substantial impact on learning, 
+				 		 		   but little is known regarding the current practice and the reasoning behind specific instructions in the context of neurofeedback (NF) and brain-computer interfaces (BCI). 
+				 		 		   We thus proposed a framework intended to enable both literature-based decision making for an optimal learning environment in NF/BCI and systematic research on the influence of instructions. 
+				 		 		   The current online app is a digital version of the framework, to be filled-in by NF/BCI scientists in order to support the scientific community and to encourage rigorous design and reporting of instructions. ", style = "font-size:15px")),
 				 		 br(),
 				 		 p("When completed, click the ‘Download summary’ button from the ‘Checklist summary’ tab. This will produce a table which you can include in your manuscript submission as supplementary material.", style = "font-size:15px"),
 				 		 br(),
-				 		 tags$div(p("For full details about this checklist, the criteria regarding each item, and the motivation for its development, please see", a(href = "https://psyarxiv.com/nyx84/", "the associated manuscript here."), style = "font-size:15px")),
+				 		 tags$div(p("For full details about this checklist, the criteria regarding each item, and the motivation for its development, please see", 
+				 		 		   a(href = "https://URLOFPAPER", "the associated manuscript here."), style = "font-size:15px")),
 				 		 br(),
-				 		 tags$div(p("This tool is currently a Beta version, and has been created by Thibaut Monseigne with the work of Hugo Pedder and Robert Thibault of the University of Bristol (). 
-				 		 		   The content is taken from the published version of the RETINA. 
+				 		 tags$div(p("This tool is currently a Beta version, and has been created by Thibaut Monseigne with the work of Hugo Pedder and Robert Thibault of the University of Bristol (",
+				 		 		   a(href = "https://psyarxiv.com/nyx84/", "manuscript here"),"). The content is taken from the published version of the RETINA. 
 				 		 		   If you encounter any bugs when using it or have any feedback, please email thibaut.monseigne@inria.fr with the subject `RETINA Shiny App` or raise an issue on", a(href = "https://github.com/tmonseigne/RETINA", "GitHub"), style = "font-size:15px"))
 				 ),
 				 
@@ -155,7 +159,7 @@ ui <- fluidPage(
 				 tabPanel("Checklist summary", 
 				 		 tags$span(style = "color:red", strong(em( textOutput("warningtext")))), 
 				 		 tags$span(style = "color:red", strong(em( textOutput("warningChoice")))),
-				 		 h2("BCI/NF instructions checklist summary output"),
+				 		 h2("RETINA summary output"),
 				 		 tags$div(
 				 		 	tags$ol(
 				 		 		tags$li(domains[1]), tags$ol(lapply(1, function(i) { tags$li(textOutput(summaryIDs[i]))}), type = "a"),
