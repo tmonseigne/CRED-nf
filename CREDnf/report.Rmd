@@ -3,7 +3,7 @@ title: "NF/BCI Instructions Checklist"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: pdf_document
 classoption: landscape
-geometry: margin=2cm
+geometry: "left=1cm,right=1cm,top=1cm,bottom=2cm"
 header-includes:
 - \usepackage{fancyhdr}
 - \usepackage{longtable}
@@ -29,9 +29,12 @@ params:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(data.table)
 library(kableExtra)
 library(knitr)
 library(dplyr)
+library(stringr)
+
 escapestr <- function(x) {
   x <- gsub("\\,", "\\\\,", x)
   x <- gsub("\\.", "\\\\.", x)
@@ -41,14 +44,35 @@ escapestr <- function(x) {
   x <- gsub("\\?", "\\\\?", x)
   x <- gsub("\\-", "\\\\-", x)
   x <- gsub("\\:", "\\\\:", x)
-  
   return(x)
 }
+
+newlineMd <- function(str){
+    return(str_replace_all(str, ", ", "  \n"))
+}
+
+newline <- function(str){
+    return(str_replace_all(str, ", ", "\n"))
+}
+
+newlineHtml <- function(str){
+    return(str_replace_all(str, ", ", "<br>"))
+}
+
 ```
 
 ```{r, echo=FALSE}
-table.df <- data.frame("Item.num" = params$checkIDs, "Checklist item" = params$checkItem, "Instructions type" = params$ticks, "Manuscript details"=params$response) # Create a table
+# Create a table
+table.dt <- data.table("Item.num" = params$checkIDs, "Checklist.item" = params$checkItem, "Instructions.type" = linebreak(newline(params$ticks)), "Manuscript.details"=params$response)
 
+```
+
+
+```{r}
+# Modify Elements
+# one instruction perlines
+#set(table.dt, "Instructions.type" = "Instructions.type", value = str_replace(table.dt[[j]],", ","\n"))
+#table.dt[,(Instructions.type):= str_replace(table.dt[,..Instructions.type],", ","\n")]
 ```
 
 
@@ -64,28 +88,20 @@ boilmatch <- as.logical(sapply(escboil, function(x) {any(grepl(x, params$boilers
 **Corresponding author email:** `r params$email`  
 &nbsp;
 
-**domains:** `r params$domains`  
-**checkIDs:** `r params$checkIDs`  
-**checkItem:** `r params$checkItem`  
-**ticks:** `r params$ticks`  
-**response:** `r params$response`  
-
-
-
 \renewcommand{\arraystretch}{1.5}
 ```{r}
-hdr <- c("Item No.", "Checklist item", "Instructions type", "Manuscript Details")
+hdr <- c("Item", "Checklist item", "Instructions type", "Manuscript Details")
 
-table.df %>%
+table.dt %>%
   mutate(Manuscript.details = cell_spec(Manuscript.details, italic=boilmatch)) %>%
   select(Item.num, Checklist.item, Instructions.type, Manuscript.details) %>%
-  kable(table.df, format="latex", longtable=TRUE, escape=FALSE, col.names=hdr) %>%
+  kable(table.dt, format="latex", align='cllll', longtable=TRUE, escape=FALSE, col.names=hdr) %>%
   kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
-  row_spec(0, bold=TRUE, font_size = 12) %>%
-  column_spec(1, border_right=TRUE) %>%
-  column_spec(2, border_right=TRUE, width="20em") %>%
-  column_spec(3, width="10em") %>%
-  column_spec(4, width="30em")
+  row_spec(0, bold = TRUE, font_size = 12) %>%
+  column_spec(1, width = "2.5em", bold = TRUE, border_left = TRUE) %>%
+  column_spec(2, width = "20em") %>%
+  column_spec(3, width = "13em") %>%
+  column_spec(4, width = "34em", border_right = TRUE) 
 # %>%
 # GRRRRRRRRRRRRRRRRRRRR
 #  pack_rows("Recruitment phase", hline_after = TRUE, 1) %>%

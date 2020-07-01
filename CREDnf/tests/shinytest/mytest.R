@@ -1,0 +1,36 @@
+app <- ShinyDriver$new("../../")
+app$snapshotInit("mytest")
+
+app$setInputs(title = "Title of manuscript")
+app$setInputs(author = "Name of the author")
+app$setInputs(email = "emoil of corresponding")
+app$snapshot()
+
+app$setInputs(checklist1a = "Yes")
+app$setInputs(checklist1a = "No")
+app$setInputs(checklist1a = "Yes")
+app$setInputs(response1a = "Super Test")
+app$snapshot()
+
+app$setInputs(checklist3a = "Yes")
+app$setInputs(tick3a = "Other")
+app$setInputs(tick3a = c("Environment and feedback", "Mental strategies", "User motivation", "Transfer tasks", "Trainers' behaviour", "Ethics", "Other"))
+app$setInputs(tick3a = c("Avoiding EEG artefacts", "Environment and feedback", "Mental strategies", "User motivation", "Transfer tasks", "Trainers' behaviour", "Ethics", "Other"))
+app$setInputs(response3a = "Mega instructions")
+app$snapshot()
+
+app$setInputs(checklist4a = "Yes")
+app$setInputs(tick4a = "Avoiding EEG artefacts")
+app$setInputs(tick4a = c("Avoiding EEG artefacts", "Environment and feedback"))
+app$snapshot()
+
+app$setInputs(checklist5a = "Yes")
+app$snapshot()
+
+app$setInputs(checklist6a = "Yes")
+app$setInputs(checklist6b = "Yes")
+app$setInputs(response6b = "Dernieres instructions")
+app$setInputs(tick6b = "Transfer tasks")
+app$setInputs(tick6b = c("User motivation", "Transfer tasks"))
+app$snapshot()
+app$snapshotDownload("reportpdf")

@@ -1,0 +1,20 @@
+{
+  "input": {
+    "author": "Name of the author",
+    "checklist1a": "No",
+    "checklist2a": "No",
+    "checklist3a": "No",
+    "checklist4a": "No",
+    "checklist5a": "No",
+    "checklist6a": "No",
+    "checklist6b": "No",
+    "email": "emoil of corresponding",
+    "title": "Title of manuscript"
+  },
+  "output": {
+
+  },
+  "export": {
+
+  }
+}
