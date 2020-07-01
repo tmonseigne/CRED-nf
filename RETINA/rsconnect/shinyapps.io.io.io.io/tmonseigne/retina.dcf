@@ -1,4 +1,4 @@
-name: nf-bci-instructions-checklist
+name: RETINA
 title:
 username:
 account: tmonseigne
@@ -6,5 +6,5 @@ server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2524745
 bundleId: 3338005
-url: https://tmonseigne.shinyapps.io/nf-bci-instructions-checklist/
+url: https://tmonseigne.shinyapps.io/RETINA/
 when: 1593592467.89953
