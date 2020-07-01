@@ -40,7 +40,3 @@ vignettes/*.pdf
 
 # pkgdown site
 docs/
-
-
-*.docx
-CREDnf/rsconnect
